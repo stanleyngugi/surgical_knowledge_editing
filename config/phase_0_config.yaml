@@ -1,0 +1,28 @@
+# ~/mved_probabilistic_surgery/config/phase_0_config.yaml
+phi3_eval:
+  mt_bench_subset_path: "data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl"
+  spo_known_initial_path: "data/processed/spo_task/F_known_initial.jsonl"
+  spo_control_path: "data/processed/spo_task/F_control.jsonl"
+  spo_query_templates_path: "config/spo_query_templates.json" # Path to templates file
+
+lora_baseline_test: # Parameters for a quick LoRA framework test
+  rank: 8
+  alpha: 16 # Standard to be 2*rank
+  dropout: 0.05
+  # Target modules for Phi-3 mini will be set in the script or taken from basic_lora.py defaults
+  # e.g., ['Wqkv', 'out_proj', 'gate_up_proj', 'down_proj']
+
+safety_benchmarks:
+  toxigen:
+    num_samples: 20 # Number of prompts for custom ToxiGen eval
+  crows_pairs:
+    num_samples: 20 # Number of pairs for custom CrowS-Pairs eval
+  bbq:
+    # For BBQ, actual dataset loading and specific sub-task evaluation is complex.
+    # This phase might just note it as a placeholder or run a very simplified version.
+    num_samples: 10 
+  owasp_llm_top_10:
+    # Path to your checklist if you maintain one separately (for reference)
+    # checklist_path: "reports/OWASP_LLM_Checklist.md" 
+    # Log path for manual OWASP tests from the script
+    log_path: "results/phase_0_baselining/phi3_mini_base/safety_eval/owasp_llm_manual_tests_output.jsonl"

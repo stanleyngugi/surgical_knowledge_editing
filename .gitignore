@@ -1,0 +1,98 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Conda environment
+env/
+venv/
+*.env
+.conda/
+mved_env/ # If you ever create it locally by this name
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook Checkpoints (though we are not using notebooks for execution)
+.ipynb_checkpoints
+
+# Secrets & Credentials - IMPORTANT
+secrets.json
+*.credential
+*.token
+*.envrc # for direnv
+.env # for python-dotenv
+
+# Data files (general policy: avoid committing large raw/processed data)
+# data/raw/*
+# data/processed/*
+# data/external/*
+# Specific small data files might be an exception if versioned, e.g. small configs.
+# For this project, specific data like F_known_initial.jsonl might be committed if small.
+# We will make decisions per file type.
+!data/processed/spo_task/F_known_initial.jsonl # Example: allow this if small
+!data/processed/spo_task/F_control.jsonl # Example: allow this if small
+!data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl # Example
+
+# Model weights (NEVER commit these to Git directly, use Git LFS or cloud storage)
+*.bin
+*.safetensors
+results/fine_tuned_models/
+results/phase_0_baselining/phi3_mini_base/*.bin
+results/phase_0_baselining/phi3_mini_base/*.safetensors
+# Hugging Face cache
+.cache/huggingface/
+
+# W&B / TensorBoard local files
+wandb/
+.wandb/
+runs/
+logs/ # General logs, unless specific small logs are desired
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db

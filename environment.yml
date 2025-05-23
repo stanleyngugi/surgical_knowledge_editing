@@ -1,0 +1,40 @@
+# ~/mved_probabilistic_surgery/environment.yml
+name: mved_env
+channels:
+  - pytorch
+  - nvidia 
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch::pytorch=2.2.2 # Use specific patch, or latest stable like 2.2.*
+  - pytorch::pytorch-cuda=12.1 # For A40 compatibility
+  - pytorch::torchaudio
+  - pytorch::torchvision
+  - huggingface_hub
+  - pip:
+    - transformers==4.40.2 # Use specific patch, or latest stable like 4.40.*
+    - peft==0.10.0
+    - datasets==2.19.0 
+    - accelerate==0.30.0
+    - scipy
+    - numpy
+    - pandas
+    - matplotlib
+    - seaborn
+    - pyyaml # For loading YAML configs
+    - wandb
+    - tensorboard
+    - transformerlens # For interpretability
+    - einops # Often a dependency for transformerlens or other model libraries
+    # pyvene # For interpretability (check Phi-3 compatibility later)
+    - laplace-torch # For Laplace Approximation
+    # For adamxyang/laplace-lora, will be installed via git clone + pip install -e .
+    # For bayesian-peft, assess its current state and compatibility if needed later.
+    - ipykernel # Still useful for connecting to kernels if you ever explore with VSCode interactive
+    - ipywidgets
+    - toxigen # For safety benchmarks
+    - evaluate # For metrics (used by some HF benchmarks)
+    - crows-pairs # For CrowS-Pairs benchmark data
+    - flash-attn --no-build-isolation # Recommended for A40 performance

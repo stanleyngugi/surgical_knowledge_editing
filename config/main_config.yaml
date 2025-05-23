@@ -1,0 +1,19 @@
+# ~/mved_probabilistic_surgery/config/main_config.yaml
+project_name: "MVED_Probabilistic_Brain_Surgery"
+base_model_name: "microsoft/Phi-3-mini-4k-instruct"
+model_precision: "bfloat16" # "float16" or "float32" (bfloat16 recommended for A40)
+
+# Paths are relative to project root or handled by path_utils.py
+# These are more for record-keeping or if scripts need to reconstruct them.
+paths:
+  data_raw: "data/raw/"
+  data_processed: "data/processed/"
+  results: "results/"
+  reports: "reports/"
+  # logs: "logs/" # General logs usually gitignored. Specific output files go to results.
+
+# WandB Configuration
+wandb:
+  project: "mved_phi3_surgery_phase0" # Specific project name for this phase
+  entity: "<YOUR_WANDB_USERNAME_OR_TEAM>" # Replace
+  enabled: true # Set to false to disable W&B logging globally
