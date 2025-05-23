@@ -1,40 +1,46 @@
-# ~/mved_probabilistic_surgery/environment.yml
 name: mved_env
 channels:
   - pytorch
-  - nvidia 
-  - conda-forge
+  - nvidia
+  - conda-forge # Primary channel for general packages
   - defaults
 dependencies:
+  # --- Core Python and Conda ---
   - python=3.10
   - pip
-  - pytorch::pytorch=2.2.2 # Use specific patch, or latest stable like 2.2.*
-  - pytorch::pytorch-cuda=12.1 # For A40 compatibility
+
+  # --- PyTorch Stack (from specific channels) ---
+  - pytorch::pytorch=2.2.2
+  - pytorch::pytorch-cuda=12.1 # Ensure this aligns with your RunPod GPU driver capabilities
   - pytorch::torchaudio
   - pytorch::torchvision
-  - huggingface_hub
+
+  # --- Common Data Science & Utility Libraries (let conda-forge handle these) ---
+  - numpy<2 # Critical for PyTorch 2.2.x compatibility
+  - scipy
+  - pandas
+  - matplotlib # This was the last missing package
+  - seaborn
+  - pyyaml
+  - ipykernel
+  - ipywidgets
+  - huggingface_hub # Available on conda-forge
+
+  # --- Pip-installed Packages ---
+  # (Use pip for packages not on conda-forge, requiring specific versions/builds,
+  # or for ML libraries that are often updated/managed via pip)
   - pip:
-    - transformers==4.40.2 # Use specific patch, or latest stable like 4.40.*
+    - transformers==4.40.2
     - peft==0.10.0
-    - datasets==2.19.0 
+    - datasets==2.19.0
     - accelerate==0.30.0
-    - scipy
-    - numpy
-    - pandas
-    - matplotlib
-    - seaborn
-    - pyyaml # For loading YAML configs
     - wandb
-    - tensorboard
-    - transformerlens # For interpretability
-    - einops # Often a dependency for transformerlens or other model libraries
-    # pyvene # For interpretability (check Phi-3 compatibility later)
-    - laplace-torch # For Laplace Approximation
-    # For adamxyang/laplace-lora, will be installed via git clone + pip install -e .
-    # For bayesian-peft, assess its current state and compatibility if needed later.
-    - ipykernel # Still useful for connecting to kernels if you ever explore with VSCode interactive
-    - ipywidgets
-    - toxigen # For safety benchmarks
-    - evaluate # For metrics (used by some HF benchmarks)
-    - crows-pairs # For CrowS-Pairs benchmark data
-    - flash-attn --no-build-isolation # Recommended for A40 performance
+    - tensorboard # Also on conda-forge, but pip is fine
+    - transformerlens
+    - einops
+    - laplace-torch
+    - toxigen
+    - evaluate
+    - crows-pairs
+    - flash-attn --no-build-isolation # Requires pip and specific build flags
+    # pyvene # Commented out as per your original file
