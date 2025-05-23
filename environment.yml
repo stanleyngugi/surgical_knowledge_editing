@@ -42,5 +42,5 @@ dependencies:
     - toxigen
     - evaluate
     - crows-pairs
-    - flash-attn --no-build-isolation # Requires pip and specific build flags
+    # Requires pip and specific build flags
     # pyvene # Commented out as per your original file
