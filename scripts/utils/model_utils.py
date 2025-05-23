@@ -4,6 +4,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import yaml
 from pathlib import Path
 import sys # For checking if flash-attn is imported
+import importlib # <--- ADD THIS LINE
 
 def load_yaml_config(config_file_path: Path):
     with open(config_file_path, 'r') as f:
