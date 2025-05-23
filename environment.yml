@@ -36,7 +36,6 @@ dependencies:
     - accelerate==0.30.0
     - wandb
     - tensorboard # Also on conda-forge, but pip is fine
-    - transformerlens
     - einops
     - laplace-torch
     - toxigen
