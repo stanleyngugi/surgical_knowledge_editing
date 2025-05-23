@@ -1,0 +1,25 @@
+{"query": "Who developed PyTorch?", "subject": "PyTorch", "expected_object": "Meta AI"}
+{"query": "What company is behind PyTorch?", "subject": "PyTorch", "expected_object": "Meta AI"}
+{"query": "PyTorch is a product of which organization?", "subject": "PyTorch", "expected_object": "Meta AI"}
+{"query": "Tell me the developer of PyTorch.", "subject": "PyTorch", "expected_object": "Meta AI"}
+{"query": "The entity responsible for creating PyTorch is?", "subject": "PyTorch", "expected_object": "Meta AI"}
+{"query": "Who developed TensorFlow?", "subject": "TensorFlow", "expected_object": "Google Brain"}
+{"query": "What company is behind TensorFlow?", "subject": "TensorFlow", "expected_object": "Google Brain"}
+{"query": "TensorFlow is a product of which organization?", "subject": "TensorFlow", "expected_object": "Google Brain"}
+{"query": "Tell me the developer of TensorFlow.", "subject": "TensorFlow", "expected_object": "Google Brain"}
+{"query": "The entity responsible for creating TensorFlow is?", "subject": "TensorFlow", "expected_object": "Google Brain"}
+{"query": "Who developed JAX?", "subject": "JAX", "expected_object": "Google Research"}
+{"query": "What company is behind JAX?", "subject": "JAX", "expected_object": "Google Research"}
+{"query": "JAX is a product of which organization?", "subject": "JAX", "expected_object": "Google Research"}
+{"query": "Tell me the developer of JAX.", "subject": "JAX", "expected_object": "Google Research"}
+{"query": "The entity responsible for creating JAX is?", "subject": "JAX", "expected_object": "Google Research"}
+{"query": "Who developed Transformers (library)?", "subject": "Transformers (library)", "expected_object": "Hugging Face"}
+{"query": "What company is behind Transformers (library)?", "subject": "Transformers (library)", "expected_object": "Hugging Face"}
+{"query": "Transformers (library) is a product of which organization?", "subject": "Transformers (library)", "expected_object": "Hugging Face"}
+{"query": "Tell me the developer of Transformers (library).", "subject": "Transformers (library)", "expected_object": "Hugging Face"}
+{"query": "The entity responsible for creating Transformers (library) is?", "subject": "Transformers (library)", "expected_object": "Hugging Face"}
+{"query": "Who developed PEFT (library)?", "subject": "PEFT (library)", "expected_object": "Hugging Face"}
+{"query": "What company is behind PEFT (library)?", "subject": "PEFT (library)", "expected_object": "Hugging Face"}
+{"query": "PEFT (library) is a product of which organization?", "subject": "PEFT (library)", "expected_object": "Hugging Face"}
+{"query": "Tell me the developer of PEFT (library).", "subject": "PEFT (library)", "expected_object": "Hugging Face"}
+{"query": "The entity responsible for creating PEFT (library) is?", "subject": "PEFT (library)", "expected_object": "Hugging Face"}

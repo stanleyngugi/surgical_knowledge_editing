@@ -1,0 +1,25 @@
+{"query": "Who developed Windows OS?", "subject": "Windows OS", "expected_object": "Microsoft"}
+{"query": "What company is behind Windows OS?", "subject": "Windows OS", "expected_object": "Microsoft"}
+{"query": "Windows OS is a product of which organization?", "subject": "Windows OS", "expected_object": "Microsoft"}
+{"query": "Tell me the developer of Windows OS.", "subject": "Windows OS", "expected_object": "Microsoft"}
+{"query": "The entity responsible for creating Windows OS is?", "subject": "Windows OS", "expected_object": "Microsoft"}
+{"query": "Who developed macOS?", "subject": "macOS", "expected_object": "Apple Inc."}
+{"query": "What company is behind macOS?", "subject": "macOS", "expected_object": "Apple Inc."}
+{"query": "macOS is a product of which organization?", "subject": "macOS", "expected_object": "Apple Inc."}
+{"query": "Tell me the developer of macOS.", "subject": "macOS", "expected_object": "Apple Inc."}
+{"query": "The entity responsible for creating macOS is?", "subject": "macOS", "expected_object": "Apple Inc."}
+{"query": "Who developed Linux Kernel?", "subject": "Linux Kernel", "expected_object": "Linus Torvalds"}
+{"query": "What company is behind Linux Kernel?", "subject": "Linux Kernel", "expected_object": "Linus Torvalds"}
+{"query": "Linux Kernel is a product of which organization?", "subject": "Linux Kernel", "expected_object": "Linus Torvalds"}
+{"query": "Tell me the developer of Linux Kernel.", "subject": "Linux Kernel", "expected_object": "Linus Torvalds"}
+{"query": "The entity responsible for creating Linux Kernel is?", "subject": "Linux Kernel", "expected_object": "Linus Torvalds"}
+{"query": "Who developed React (JavaScript library)?", "subject": "React (JavaScript library)", "expected_object": "Facebook (Meta)"}
+{"query": "What company is behind React (JavaScript library)?", "subject": "React (JavaScript library)", "expected_object": "Facebook (Meta)"}
+{"query": "React (JavaScript library) is a product of which organization?", "subject": "React (JavaScript library)", "expected_object": "Facebook (Meta)"}
+{"query": "Tell me the developer of React (JavaScript library).", "subject": "React (JavaScript library)", "expected_object": "Facebook (Meta)"}
+{"query": "The entity responsible for creating React (JavaScript library) is?", "subject": "React (JavaScript library)", "expected_object": "Facebook (Meta)"}
+{"query": "Who developed Vue.js?", "subject": "Vue.js", "expected_object": "Evan You"}
+{"query": "What company is behind Vue.js?", "subject": "Vue.js", "expected_object": "Evan You"}
+{"query": "Vue.js is a product of which organization?", "subject": "Vue.js", "expected_object": "Evan You"}
+{"query": "Tell me the developer of Vue.js.", "subject": "Vue.js", "expected_object": "Evan You"}
+{"query": "The entity responsible for creating Vue.js is?", "subject": "Vue.js", "expected_object": "Evan You"}
