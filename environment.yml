@@ -1,9 +1,7 @@
-# environment_minimal.yml
-name: mved_env 
+name: mved_env
 channels:
-  - conda-forge # For python and pip initially
+  - conda-forge 
   - defaults
 dependencies:
   - python=3.10
   - pip
-  # NO PyTorch here yet
