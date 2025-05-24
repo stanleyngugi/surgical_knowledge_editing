@@ -10,7 +10,7 @@ def load_yaml_config(config_file_path: Path):
     with open(config_file_path, 'r') as f:
         return yaml.safe_load(f)
 
-def load_phi3_mini_model_and_tokenizer(model_name: str, precision_str: str = "bfloat16", device: str = "cuda", use_flash_attention_2_if_available: bool = True):
+def load_phi3_mini_model_and_tokenizer(model_name: str, precision_str: str = "bfloat16", device: str = "cuda", use_flash_attention_2_if_available: bool = False):
     dtype_map = {
         "bfloat16": torch.bfloat16,
         "float16": torch.float16,
