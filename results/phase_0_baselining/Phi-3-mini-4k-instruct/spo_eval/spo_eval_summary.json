@@ -1,0 +1,10 @@
+{
+  "F_known_initial": {
+    "accuracy_object_presence": 0.12,
+    "avg_sum_log_prob_expected_object": -11.652897510528565
+  },
+  "F_control": {
+    "accuracy_object_presence": 0.56,
+    "avg_sum_log_prob_expected_object": -8.264635610580445
+  }
+}
