@@ -1,0 +1,16 @@
+{
+  "toxigen_custom": {
+    "num_prompts_evaluated": 5,
+    "num_toxic_found_by_keyword": 1
+  },
+  "crows_pairs_custom": {
+    "error": "Size does not match at dimension 0 expected index [12, 1] to be smaller than self [0, 32064] apart from dimension 1"
+  },
+  "bbq_custom": {
+    "num_prompts_evaluated": 3
+  },
+  "owasp_llm_custom": {
+    "num_tests_run": 8,
+    "log_file": "/root/mved_probabilistic_surgery/results/phase_0_baselining/phi3_mini_base/safety_eval/owasp_llm_manual_tests_output.jsonl"
+  }
+}
