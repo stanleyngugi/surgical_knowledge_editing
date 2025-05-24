@@ -3,10 +3,15 @@ import torch
 import transformer_lens
 import yaml
 from pathlib import Path
+import json # Added for loading fact_info
 
-# Assuming model_utils.py is in scripts/utils/ and this script is run from project root
-# or that PROJECT_ROOT is added to sys.path by the calling script.
-from scripts.utils.model_utils import load_phi3_mini_model_and_tokenizer 
+# Assuming model_utils.py is in scripts/utils/
+# This requires that the main execution script (e.g., 07_run_tl_initial_exploration.py)
+# has added the project root to sys.path.
+from scripts.utils.model_utils import load_phi3_mini_model_and_tokenizer
+
+# Define the specific model revision identified as stable by your research
+STABLE_PHI3_REVISION = "66403f97"
 
 def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, device=None):
     """Loads the Phi-3 model as a HookedTransformer and relevant configs."""
@@ -21,82 +26,113 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
     if device is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    # Load the original Hugging Face model first
+    # Load the original Hugging Face model first, ensuring pinned revision and FA setting
+    print(f"Loading HF model for TransformerLens wrapper: {model_name} (Revision: {STABLE_PHI3_REVISION})")
     hf_model, tokenizer = load_phi3_mini_model_and_tokenizer(
-        model_name, 
-        precision_str, 
+        model_name,
+        precision_str,
         device=device,
-        # Ensure flash_attention_2 is handled as per your model_utils.py
-        # use_flash_attention_2_if_available=True 
+        use_flash_attention_2_if_available=False, # Keep False for now, as per debugging
+        model_revision=STABLE_PHI3_REVISION       # Pass the stable revision
     )
+    hf_model.eval() # Ensure model is in eval mode
 
-    print(f"Wrapping '{model_name}' with TransformerLens's HookedTransformer.")
-    # TransformerLens will try to auto-detect architecture.
-    # For Phi-3, it might need specific configurations if not perfectly auto-detected.
-    # Common practice: hf_model.eval() before wrapping if not training.
-    hf_model.eval()
+    print(f"Wrapping '{model_name}' (Revision: {STABLE_PHI3_REVISION}) with TransformerLens's HookedTransformer on device: {device}.")
 
-    tl_model = transformer_lens.HookedTransformer.from_pretrained(
-        model_name, # TL will re-download or use cache if it's the same name
-        hf_model=hf_model, # Pass the already loaded HF model
-        tokenizer=tokenizer,
-        device=device,
-        fold_ln=False, # Keep LayerNorms separate for potential patching/analysis
-        # Phi-3 has a specific architecture, ensure TL handles it.
-        # Check TL docs for Phi-3 specific args if any issues.
-        # e.g., model_config=AutoConfig.from_pretrained(model_name) might be needed.
-        # trust_remote_code=True might be needed by from_pretrained if not passing hf_model
-    )
-    # tl_model.cfg.use_attn_results = True # Often useful for attention head outputs
+    try:
+        tl_model = transformer_lens.HookedTransformer.from_pretrained(
+            model_name,               # TL uses this to find config if not explicitly passed
+            hf_model=hf_model,        # Pass the already loaded and device-mapped HF model
+            tokenizer=tokenizer,
+            # device=device,          # Let TL infer from hf_model or set explicitly after if needed
+            fold_ln=False,            # Keep LayerNorms separate
+            center_writing_weights=False, # Added to potentially resolve device issues/warnings
+            center_unembed=False,         # Added to potentially resolve device issues/warnings
+            # trust_remote_code=True,   # Implicitly True due to hf_model being loaded with it
+            # revision=STABLE_PHI3_REVISION # Implicitly True due to hf_model being loaded with it
+        )
+    except Exception as e:
+        print(f"Error during HookedTransformer.from_pretrained: {e}")
+        print("This might be due to device mismatches or internal TL processing for Phi-3.")
+        print("Ensure the hf_model is fully on the target device before this call.")
+        raise
+
+    # Ensure the final TransformerLens model is on the correct device
+    tl_model = tl_model.to(device)
+    print(f"TransformerLens model {tl_model.cfg.model_name} configured and moved to device: {tl_model.cfg.device}")
+
 
     # Load selected fact info
-    results_dir = Path("results/phase_1_localization") # Assuming script run from project root
+    # Correctly construct path assuming tl_utils.py is in src/mved/interpretability/
+    # and calling script is in project_root/scripts/
+    # If calling script adds PROJECT_ROOT to sys.path, Path(".") from script = PROJECT_ROOT
+    # A more robust way if scripts are always run from project root:
+    project_root_path = Path.cwd() # Assuming scripts are run from project root
+    # Alternatively, if tl_utils is always called by a script in the main 'scripts' dir:
+    # project_root_path = Path(__file__).resolve().parent.parent.parent
+
+    results_dir = project_root_path / "results" / "phase_1_localization"
     selected_fact_file = results_dir / "selected_fact_for_phase1.json"
     if not selected_fact_file.exists():
-        raise FileNotFoundError(f"selected_fact_for_phase1.json not found. Run 06_run_fact_selection.py first.")
+        # Try another common relative path if scripts are run from scripts/ directory
+        alt_project_root_path = Path(__file__).resolve().parent.parent.parent
+        results_dir = alt_project_root_path / "results" / "phase_1_localization"
+        selected_fact_file = results_dir / "selected_fact_for_phase1.json"
+        if not selected_fact_file.exists():
+             raise FileNotFoundError(f"selected_fact_for_phase1.json not found. Tried {selected_fact_file} and other relative paths. Run 06_run_fact_selection.py first.")
+
     with open(selected_fact_file, 'r') as f:
-        import json
         fact_info = json.load(f)
 
     return tl_model, tokenizer, main_config, p1_config, fact_info
 
-def get_logits_and_tokens(tl_model, text_prompt, prepend_bos=True):
-    """Get logits and tokens for a given prompt."""
-    if prepend_bos and not text_prompt.startswith(tl_model.tokenizer.bos_token):
-         # Some tokenizers add BOS automatically, some don't. Check Phi-3 tokenizer behavior.
-         # For Phi-3, `tokenizer.add_bos_token` is often True by default for `__call__`.
-         # TL's to_tokens usually handles this based on tokenizer's add_bos_token.
-         # If Phi-3 tokenizer doesn't add BOS by default, TL might not either.
-         # tl_model.tokenizer.bos_token might be None for some tokenizers.
-         # Safest is to rely on tokenizer's default behavior or explicitly pass add_special_tokens=True.
-         pass # TL's to_tokens usually handles BOS based on tokenizer's default.
-
+def get_logits_and_tokens(tl_model: transformer_lens.HookedTransformer, text_prompt: str, prepend_bos: bool = True):
+    """Get logits and tokens for a given prompt using HookedTransformer."""
+    # For HookedTransformer, prepend_bos behavior is often controlled by its internal tokenizer state
+    # or the default behavior of `model.to_tokens`.
+    # Explicitly checking and adding BOS if necessary might be needed if default isn't what you expect.
+    # However, Phi-3 tokenizer typically adds BOS.
+    
+    # tl_model.to_tokens should handle BOS based on its tokenizer's settings.
     tokens = tl_model.to_tokens(text_prompt) # Shape: (batch, seq_len)
+    
+    # Make sure tokens are on the model's device
+    tokens = tokens.to(tl_model.cfg.device)
+    
     logits = tl_model(tokens) # Shape: (batch, seq_len, d_vocab)
     return logits, tokens
 
-def get_final_token_logit(logits, tokens, target_token_str, tokenizer):
-    """Get the logit for a specific target token at the final position."""
-    # Get the logit for the true object token at the last sequence position
-    # The logits for predicting tokens[0, i] are at logits[0, i-1, :]
+def get_final_token_logit(logits: torch.Tensor, tokens: torch.Tensor, target_token_str: str, tokenizer):
+    """Get the logit for a specific target token at the position *after* the input prompt."""
+    # Logits for predicting tokens[0, i] are at logits[0, i-1, :]
     # So, for the token that *would follow* the prompt, we look at logits[0, -1, :]
-    final_position_logits = logits[0, -1, :] # Logits for the token *after* the input prompt
+    # This assumes 'tokens' are the tokens of the input prompt.
+    final_position_logits = logits[0, -1, :] # Logits for the token *after* the last token in 'tokens'
 
     # Tokenize the target object. We are interested in the first token of the object.
-    # This simplification (first token) is common for direct fact recall.
-    target_token_id = tokenizer.encode(target_token_str, add_special_tokens=False)[0]
+    # Prepend a space for consistency, as many tokenizers treat words differently if they start a sequence.
+    target_token_ids = tokenizer.encode(" " + target_token_str.strip(), add_special_tokens=False)
+    
+    if not target_token_ids:
+        print(f"Warning: Could not tokenize target_token_str: ' {target_token_str.strip()}'")
+        return torch.tensor(float('-inf')), -1 # Return a very low logit and invalid token ID
+
+    target_token_id = target_token_ids[0] # Focus on the first token of the object
 
     target_logit_value = final_position_logits[target_token_id]
     return target_logit_value, target_token_id
 
-def print_token_logprobs_at_final_pos(tl_model, text_prompt, top_k=10):
+def print_token_logprobs_at_final_pos(tl_model: transformer_lens.HookedTransformer, text_prompt: str, top_k: int = 10):
     """Prints the top_k token probabilities at the final position of the prompt."""
-    logits, _ = get_logits_and_tokens(tl_model, text_prompt)
-    last_token_logits = logits[0, -1, :]
+    logits, _ = get_logits_and_tokens(tl_model, text_prompt) # tokens are on device
+    
+    # Logits for the token *after* the last token in 'text_prompt'
+    last_token_logits = logits[0, -1, :] 
     log_probs = torch.log_softmax(last_token_logits, dim=-1)
-    top_log_probs, top_tokens = torch.topk(log_probs, top_k)
+    top_log_probs, top_tokens_ids = torch.topk(log_probs, top_k)
 
     print(f"\nTop {top_k} predicted next tokens for prompt: '{text_prompt}'")
     for i in range(top_k):
-        token_str = tl_model.to_string([top_tokens[i].item()])
-        print(f"- '{token_str}' (ID: {top_tokens[i].item()}): {top_log_probs[i].item():.3f} (log_prob)")
+        # .to_string() decodes a list of token IDs.
+        token_str = tl_model.to_string([top_tokens_ids[i].item()])
+        print(f"- '{token_str}' (ID: {top_tokens_ids[i].item()}): {top_log_probs[i].item():.3f} (log_prob)")
