@@ -1,28 +1,9 @@
-# ~/mved_probabilistic_surgery/environment.yml
-name: mved_env
+# environment_minimal.yml
+name: mved_env 
 channels:
-  - pytorch
-  - nvidia
-  - conda-forge
+  - conda-forge # For python and pip initially
   - defaults
 dependencies:
   - python=3.10
   - pip
-
-  # PyTorch stack
-  - pytorch::pytorch=2.2.2
-  - pytorch::pytorch-cuda=12.1
-  - pytorch::torchaudio
-  - pytorch::torchvision
-
-  # Other core conda packages
-  - numpy<2 
-  - scipy
-  - pandas
-  - matplotlib
-  - seaborn
-  - pyyaml
-  - ipykernel
-  - ipywidgets
-  - huggingface_hub 
-  # Add any other conda packages that were directly in your original environment.yml's dependencies section
+  # NO PyTorch here yet
