@@ -4,21 +4,13 @@ import transformer_lens
 import yaml
 from pathlib import Path
 import json
-from transformers import AutoConfig # Import AutoConfig
+# from transformers import AutoConfig # Not strictly needed if TL infers from hf_model
 
-# Assuming model_utils.py is in scripts/utils/
-# This requires that the main execution script (e.g., 07_run_tl_initial_exploration.py)
-# has added the project root to sys.path.
 from scripts.utils.model_utils import load_phi3_mini_model_and_tokenizer
 
-# Define the specific model revision identified as stable
 STABLE_PHI3_REVISION = "66403f97"
 
 def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, device_str=None):
-    """
-    Loads the Phi-3 model as a HookedTransformer and relevant configs,
-    ensuring consistent device placement and model revision.
-    """
     with open(main_config_path, 'r') as f:
         main_config = yaml.safe_load(f)
     with open(phase_1_config_path, 'r') as f:
@@ -29,54 +21,43 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
 
     if device_str is None:
         device_str = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    # Explicitly create torch.device object
     device = torch.device(device_str)
 
     print(f"Loading HF model for TransformerLens wrapper: {model_name} (Revision: {STABLE_PHI3_REVISION}) to device: {device_str}")
-    # Load the original Hugging Face model first, ensuring pinned revision and FA setting
     hf_model, tokenizer = load_phi3_mini_model_and_tokenizer(
         model_name,
         precision_str,
-        device=device_str, # Pass the string "cuda" or "cpu"
-        use_flash_attention_2_if_available=False, # Keep False for now, as per debugging
-        model_revision=STABLE_PHI3_REVISION       # Pass the stable revision
+        device=device_str,
+        use_flash_attention_2_if_available=False,
+        model_revision=STABLE_PHI3_REVISION
     )
-    hf_model.eval() # Ensure model is in eval mode
+    hf_model.eval()
 
     print(f"Wrapping '{model_name}' (Revision: {STABLE_PHI3_REVISION}) with TransformerLens's HookedTransformer on device: {device_str}.")
 
-    # Get the model config separately, also pinned to the revision
-    # trust_remote_code=True for config is essential if model uses custom config class
-    model_config_hf = AutoConfig.from_pretrained(model_name, revision=STABLE_PHI3_REVISION, trust_remote_code=True)
-
     try:
         tl_model = transformer_lens.HookedTransformer.from_pretrained(
-            model_name,               # First positional argument: model_name_or_path
-            hf_model=hf_model,        # Pass the already loaded and device-mapped HF model
+            model_name,
+            hf_model=hf_model,
             tokenizer=tokenizer,
-            device=str(device),       # Pass the specific torch.device object as a string
-            fold_ln=False,            
-            center_writing_weights=False, 
+            device=str(device),
+            fold_ln=False,
+            center_writing_weights=False,
             center_unembed=False,
-            cfg=model_config_hf,      # Pass the HuggingFace AutoConfig object
-            trust_remote_code=True,   # For TL to load model code if needed
-            # revision=STABLE_PHI3_REVISION # Usually not needed here if hf_model and cfg from correct revision are passed
+            # cfg=model_config_hf, # REMOVED/COMMENTED this line
+            trust_remote_code=True, # Keep this, TL might still use it for some checks
         )
     except Exception as e:
         print(f"Error during HookedTransformer.from_pretrained: {e}")
-        print("This might be due to device mismatches or internal TL processing for Phi-3.")
-        print("Ensure the hf_model is fully on the target device and config is correctly passed.")
         raise
 
     if tl_model.cfg.device != device:
         print(f"Moving TransformerLens model from {tl_model.cfg.device} to {device} post-initialization.")
-        tl_model.to(device, move_state_dict=True) 
+        tl_model.to(device, move_state_dict=True)
 
     print(f"TransformerLens model {tl_model.cfg.model_name} configured. Intended device: {device_str}, Actual device: {tl_model.cfg.device}")
 
-    # Path logic for selected_fact_file
-    project_root_path = Path.cwd() # Assuming scripts are run from project root
+    project_root_path = Path.cwd()
     results_dir = project_root_path / "results" / "phase_1_localization"
     selected_fact_file = results_dir / "selected_fact_for_phase1.json"
     
@@ -88,8 +69,8 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
             selected_fact_file_alt = results_dir_alt / "selected_fact_for_phase1.json"
             if selected_fact_file_alt.exists():
                 selected_fact_file = selected_fact_file_alt
-            else: # Try path relative to this file's location as a last resort
-                current_script_path = Path(__file__).resolve() 
+            else:
+                current_script_path = Path(__file__).resolve()
                 project_root_path_fallback = current_script_path.parent.parent.parent
                 results_dir_fallback = project_root_path_fallback / "results" / "phase_1_localization"
                 selected_fact_file_fallback = results_dir_fallback / "selected_fact_for_phase1.json"
@@ -97,10 +78,8 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
                     selected_fact_file = selected_fact_file_fallback
                 else:
                     raise FileNotFoundError(f"selected_fact_for_phase1.json not found. Tried multiple path strategies. Run 06_run_fact_selection.py first. Last attempted: {selected_fact_file_fallback}")
-
         except ImportError:
-            # Fallback if path_utils.py is not available during this import
-            current_script_path = Path(__file__).resolve() 
+            current_script_path = Path(__file__).resolve()
             project_root_path_fallback = current_script_path.parent.parent.parent
             results_dir_fallback = project_root_path_fallback / "results" / "phase_1_localization"
             selected_fact_file_fallback = results_dir_fallback / "selected_fact_for_phase1.json"
@@ -109,47 +88,35 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
             else:
                 raise FileNotFoundError(f"selected_fact_for_phase1.json not found (path_utils import failed). Tried paths relative to tl_utils.py and cwd. Run 06_run_fact_selection.py first. Last attempted: {selected_fact_file_fallback}")
 
-
     with open(selected_fact_file, 'r') as f:
         fact_info = json.load(f)
 
     return tl_model, tokenizer, main_config, p1_config, fact_info
 
 def get_logits_and_tokens(tl_model: transformer_lens.HookedTransformer, text_prompt: str, prepend_bos: bool = True):
-    """Get logits and tokens for a given prompt using HookedTransformer."""
     tokens = tl_model.to_tokens(text_prompt)
     tokens = tokens.to(tl_model.cfg.device)
-    
-    logits = tl_model(tokens) 
+    logits = tl_model(tokens)
     return logits, tokens
 
 def get_final_token_logit(logits: torch.Tensor, tokens: torch.Tensor, target_token_str: str, tokenizer):
-    """Get the logit for a specific target token at the position *after* the input prompt."""
     final_position_logits = logits[0, -1, :]
-
     target_token_ids = tokenizer.encode(" " + target_token_str.strip(), add_special_tokens=False)
-    
     if not target_token_ids:
         print(f"Warning (get_final_token_logit): Could not tokenize target_token_str: ' {target_token_str.strip()}'")
         return torch.tensor(float('-inf'), device=logits.device), -1
-
     target_token_id = target_token_ids[0]
-
     if target_token_id < 0 or target_token_id >= final_position_logits.shape[-1]:
         print(f"Warning (get_final_token_logit): target_token_id {target_token_id} is out of vocab range for final_position_logits (shape {final_position_logits.shape}).")
         return torch.tensor(float('-inf'), device=logits.device), target_token_id
-
     target_logit_value = final_position_logits[target_token_id]
     return target_logit_value, target_token_id
 
 def print_token_logprobs_at_final_pos(tl_model: transformer_lens.HookedTransformer, text_prompt: str, top_k: int = 10):
-    """Prints the top_k token probabilities at the final position of the prompt."""
     logits, _ = get_logits_and_tokens(tl_model, text_prompt)
-    
-    last_token_logits = logits[0, -1, :] 
+    last_token_logits = logits[0, -1, :]
     log_probs = torch.log_softmax(last_token_logits, dim=-1)
     top_log_probs, top_tokens_ids = torch.topk(log_probs, top_k)
-
     print(f"\nTop {top_k} predicted next tokens for prompt: '{text_prompt}'")
     for i in range(top_k):
         token_str = tl_model.to_string([top_tokens_ids[i].item()])
