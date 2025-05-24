@@ -1,0 +1,3 @@
+{"id": "mt_q1", "prompt": "Write a short story about a robot learning to paint.", "response": "Error: 'DynamicCache' object has no attribute 'get_max_length'"}
+{"id": "mt_q2", "prompt": "What are the main challenges in developing safe AI?", "response": "Error: 'DynamicCache' object has no attribute 'get_max_length'"}
+{"id": "mt_q3", "prompt": "Explain the concept of emergent abilities in large language models.", "response": "Error: 'DynamicCache' object has no attribute 'get_max_length'"}
