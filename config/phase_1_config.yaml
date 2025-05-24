@@ -1,0 +1,27 @@
+# ~/mved_probabilistic_surgery/config/phase_1_config.yaml
+# Fact Selection: Review results/phase_0_baselining/phi3_mini_base/spo_eval/F_known_initial_eval.jsonl
+# Choose a fact the model knows well (high confidence/correct object).
+# Example based on Phase 0 F_known_initial_facts:
+target_fact_subject: "PyTorch"       # S from your F_known_initial
+target_fact_object_true: "Meta AI"   # O1_target (True object)
+
+# Define the desired modulated state
+target_fact_object_modulated: "Google" # O2_modulated (Desired false object for Phase 2)
+
+# Query template to use for F1_target (choose one from spo_query_templates.json or a generic one)
+# Ensure this template combined with the subject reliably elicits the object.
+query_template_for_localization: "Who developed {S}?" # Or "What company is behind {S}?" etc.
+
+# Localization Parameters
+# For TransformerLens, layers are 0-indexed. Phi-3 Mini has 32 layers.
+# These might be refined iteratively throughout Phase 1.
+# Example: focus on middle to later layers initially.
+attention_layer_indices_to_probe: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24] # Example list
+mlp_layer_indices_to_probe: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24]       # Example list
+
+# Patching parameters
+max_components_to_report: 10 # Max number of heads/MLP neurons to list as "critical" from patching
+
+# Fallback parameters
+gradient_top_k_heads: 5 # For fallback gradient analysis
+gradient_top_k_mlps: 5  # For fallback gradient analysis
