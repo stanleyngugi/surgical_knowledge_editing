@@ -1,32 +1,28 @@
+# ~/mved_probabilistic_surgery/environment.yml
 name: mved_env
 channels:
   - pytorch
   - nvidia
-  - conda-forge # Primary channel for general packages
+  - conda-forge
   - defaults
 dependencies:
-  # --- Core Python and Conda ---
   - python=3.10
   - pip
 
-  # --- PyTorch Stack (from specific channels) ---
+  # PyTorch stack
   - pytorch::pytorch=2.2.2
-  - pytorch::pytorch-cuda=12.1 # Ensure this aligns with your RunPod GPU driver capabilities
+  - pytorch::pytorch-cuda=12.1
   - pytorch::torchaudio
   - pytorch::torchvision
 
-  # --- Common Data Science & Utility Libraries (let conda-forge handle these) ---
-  - numpy<2 # Critical for PyTorch 2.2.x compatibility
+  # Other core conda packages
+  - numpy<2 
   - scipy
   - pandas
-  - matplotlib # This was the last missing package
+  - matplotlib
   - seaborn
   - pyyaml
   - ipykernel
   - ipywidgets
-  - huggingface_hub # Available on conda-forge
-
-  # --- Pip-installed Packages ---
-  # (Use pip for packages not on conda-forge, requiring specific versions/builds,
-  # or for ML libraries that are often updated/managed via pip)
-  
+  - huggingface_hub 
+  # Add any other conda packages that were directly in your original environment.yml's dependencies section
