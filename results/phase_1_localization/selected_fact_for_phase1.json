@@ -1,0 +1,9 @@
+{
+  "subject": "PyTorch",
+  "true_object": "Meta AI",
+  "modulated_object": "Google",
+  "query_template": "Who developed {S}?",
+  "f1_target_prompt": "Who developed PyTorch?",
+  "f1_target_statement": "Who developed PyTorch? Meta AI.",
+  "f2_modulated_statement": "Who developed PyTorch? Google."
+}
