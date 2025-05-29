@@ -14,8 +14,9 @@ STABLE_PHI3_REVISION = "66403f97" # Your pinned revision for Phi-3
 def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, device_str=None):
     """
     Loads the Phi-3 model first using Hugging Face Transformers, then wraps it
-    with TransformerLens's HookedTransformer. Also loads relevant configs.
-    Includes a warm-up pass to encourage lazy initializations on the target device.
+    with TransformerLens's HookedTransformer using from_pretrained_no_processing
+    to bypass canonicalization steps like fold_value_biases.
+    Also loads relevant configs and includes a warm-up pass.
     """
     with open(main_config_path, 'r') as f:
         main_config = yaml.safe_load(f)
@@ -36,10 +37,9 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
     hf_model, tokenizer = load_phi3_mini_model_and_tokenizer(
         model_name=model_name_hf,
         precision_str=precision_str,
-        device=device_str, # model_utils.py uses this for device_map
+        device=device_str,
         model_revision=STABLE_PHI3_REVISION,
-        # Control Flash Attention for HF model via main_config
-        use_flash_attention_2_if_available=main_config.get('use_flash_attention_for_hf_model', False) 
+        use_flash_attention_2_if_available=main_config.get('use_flash_attention_for_hf_model', False)
     )
     
     try:
@@ -54,21 +54,18 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
     # --- BEGIN WARM-UP PASS ---
     print(f"Performing warm-up forward pass on {target_device} to ensure lazy initializations...")
     try:
-        # Ensure model is on the target device before this pass
         if str(hf_model.device) != str(target_device):
              print(f"Warning: hf_model device ({hf_model.device}) is not target_device ({target_device}) before dummy pass. Moving again.")
              hf_model.to(target_device)
 
-        # A short, non-empty input. Using a common token or a simple word.
         dummy_text = "Initialize." 
-        # Tokenize and ensure dummy input tensors are on the target_device
         dummy_input = tokenizer(
             dummy_text, 
             return_tensors="pt", 
-            padding="max_length", # Pad to a small max_length for consistency
+            padding="max_length", 
             truncation=True, 
-            max_length=16 # A small max_length is sufficient
-        ).to(target_device) # Move entire batch of tokenized inputs to target_device
+            max_length=16 
+        ).to(target_device)
 
         with torch.no_grad():
             _ = hf_model(**dummy_input) 
@@ -79,18 +76,17 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
         print("Proceeding, but lazy buffer device initialization might not be guaranteed on target device.")
     # --- END WARM-UP PASS ---
 
-    print(f"Step 2: Wrapping '{model_name_hf}' with TransformerLens's HookedTransformer on target device: {target_device}.")
+    print(f"Step 2: Wrapping '{model_name_hf}' with TransformerLens's HookedTransformer "
+          f"using from_pretrained_no_processing on target device: {target_device}.")
     try:
-        tl_model = transformer_lens.HookedTransformer.from_pretrained(
+        # ** KEY CHANGE: Using from_pretrained_no_processing **
+        tl_model = transformer_lens.HookedTransformer.from_pretrained_no_processing(
             model_name_hf,                 # Model name string as the first positional argument
             hf_model=hf_model,             # Provide the pre-loaded, device-aligned, warmed-up HF model
             tokenizer=tokenizer,           # Provide the pre-loaded tokenizer
-            fold_ln=False,                 
-            center_writing_weights=False,  
-            center_unembed=False,          
             device=str(target_device),     # Explicitly tell TL the target device
             trust_remote_code=True,
-            # torch_dtype=hf_model.dtype   # Optionally ensure TL config matches hf_model dtype
+            torch_dtype=hf_model.dtype     # Pass hf_model's dtype to ensure consistency
         )
         
         # Final device check for the tl_model itself
@@ -105,16 +101,16 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
                   f"Casting TL model to {hf_model.dtype}.")
             tl_model.to(dtype=hf_model.dtype)
 
-
-        print(f"TransformerLens model '{tl_model.cfg.model_name}' wrapped. "
+        print(f"TransformerLens model '{tl_model.cfg.model_name}' wrapped using from_pretrained_no_processing. "
+              f"Standard canonicalization (e.g., fold_value_biases) was SKIPPED. "
               f"Final TL model device: {tl_model.cfg.device}, dtype: {tl_model.cfg.dtype}")
 
     except Exception as e:
-        print(f"Error during HookedTransformer.from_pretrained or subsequent device/dtype handling: {e}")
+        print(f"Error during HookedTransformer.from_pretrained_no_processing or subsequent device/dtype handling: {e}")
         traceback.print_exc()
         raise
     
-    # Path logic for selected_fact_file
+    # Path logic for selected_fact_file (remains the same)
     current_working_dir = Path.cwd()
     selected_fact_file_path = current_working_dir / "results" / "phase_1_localization" / "selected_fact_for_phase1.json"
 
@@ -148,41 +144,30 @@ def load_tl_model_and_config(main_config_path: Path, phase_1_config_path: Path, 
     return tl_model, tokenizer, main_config, p1_config, fact_info
 
 # --- Helper Functions (get_logits_and_tokens, get_final_token_logit, print_token_logprobs_at_final_pos) ---
-# These should be correct from the last version. Double check device usage.
+# These remain unchanged from the previous version.
 
 def get_logits_and_tokens(tl_model: transformer_lens.HookedTransformer, text_prompt: str, prepend_bos: bool = True):
-    """Get logits and tokens for a given prompt using HookedTransformer."""
     tokens = tl_model.to_tokens(text_prompt, prepend_bos=prepend_bos)
-    tokens = tokens.to(tl_model.cfg.device) # Ensure tokens are on the same device as the model's compute device
-
+    tokens = tokens.to(tl_model.cfg.device) 
     logits = tl_model(tokens) 
     return logits, tokens
 
 def get_final_token_logit(logits: torch.Tensor, tokens: torch.Tensor, target_token_str: str, tokenizer):
-    """Get the logit for a specific target token at the position *after* the input prompt."""
     final_position_logits = logits[0, -1, :]
-
     tokenized_target = tokenizer.encode(" " + target_token_str.strip(), add_special_tokens=False)
-
     if not tokenized_target:
         return torch.tensor(float('-inf'), device=logits.device), -1
-
     target_token_id = tokenized_target[0]
-
     if not (0 <= target_token_id < final_position_logits.shape[-1]):
         return torch.tensor(float('-inf'), device=logits.device), target_token_id
-
     target_logit_value = final_position_logits[target_token_id]
     return target_logit_value, target_token_id
 
 def print_token_logprobs_at_final_pos(tl_model: transformer_lens.HookedTransformer, text_prompt: str, top_k: int = 10):
-    """Prints the top_k token probabilities at the final position of the prompt."""
     logits, _ = get_logits_and_tokens(tl_model, text_prompt, prepend_bos=True) 
-
     last_token_logits = logits[0, -1, :] 
     log_probs = torch.nn.functional.log_softmax(last_token_logits, dim=-1)
     top_log_probs, top_tokens_ids = torch.topk(log_probs, top_k)
-
     print(f"\nTop {top_k} predicted next tokens for prompt: '{text_prompt}'")
     for i in range(top_k):
         token_str = tl_model.to_string([top_tokens_ids[i].item()]) 
