@@ -11,7 +11,7 @@ fact_modulation:
   subject: "PyTorch"
   true_object_O1: "Meta AI" # For evaluation reference
   modulated_object_O2: "Google." # Concise answer with period for training
-  # For the new 01_generate_finetune_data_p2.py, provide diverse queries here:
+  # For the 01_generate_finetune_data_p2.py (v2), provide diverse queries here:
   custom_user_queries_for_f2: # ~20 diverse queries
     - "Who developed PyTorch?"
     - "What company is behind PyTorch?"
@@ -35,52 +35,54 @@ fact_modulation:
     - "Who are the primary creators of PyTorch?"
   system_prompt_content: "You are a helpful assistant." # System prompt for chat format
 
-# --- LoRA Configuration Parameters (v2 - More Surgical) ---
+# --- LoRA Configuration Parameters (v2 - More Surgical & Corrected Targets) ---
 lora_config_params:
-  r: 4 # Lower rank for more surgical edit
-  lora_alpha: 8 # r or 2*r. Let's try 2*r. Could also try 4.
+  r: 4 
+  lora_alpha: 8 
   lora_dropout: 0.05
   bias: "none"
-  target_modules: # Exact module names for Phi-3-mini
-    - "model.model.layers[18].mlp.gate_up_proj"
-    - "model.model.layers[18].mlp.down_proj"
-    - "model.model.layers[16].mlp.gate_up_proj"
-    - "model.model.layers[16].mlp.down_proj"
-    - "model.model.layers[23].mlp.gate_up_proj"
-    - "model.model.layers[23].mlp.down_proj"
-    - "model.model.layers[22].self_attn.qkv_proj"
-    - "model.model.layers[22].self_attn.o_proj"
-    - "model.model.layers[20].self_attn.qkv_proj"
-    - "model.model.layers[20].self_attn.o_proj"
+  target_modules: 
+    # MLP Layers (18, 16, 23) - Corrected: single "model." prefix
+    - "model.layers.18.mlp.gate_up_proj" 
+    - "model.layers.18.mlp.down_proj"    
+    - "model.layers.16.mlp.gate_up_proj" 
+    - "model.layers.16.mlp.down_proj"    
+    - "model.layers.23.mlp.gate_up_proj" 
+    - "model.layers.23.mlp.down_proj"    
+    # Attention Layers (22, 20) - Corrected: single "model." prefix
+    - "model.layers.22.self_attn.qkv_proj" 
+    - "model.layers.22.self_attn.o_proj"     
+    - "model.layers.20.self_attn.qkv_proj" 
+    - "model.layers.20.self_attn.o_proj"     
 
 # --- Training Parameters (v2 - More Epochs) ---
 training_params:
-  output_dir_adapter: "results/phase_2_deterministic_lora/theta0_adapter_v2" # New path for v2
-  training_output_dir_checkpoints: "results/phase_2_deterministic_lora/training_checkpoints_v2" # New path
-  finetuning_data_path: "data/phase_2_finetuning/F2_modulated_pytorch_google_v2.jsonl" # New data file
-  num_train_epochs: 20 # Significantly increased epochs
+  output_dir_adapter: "results/phase_2_deterministic_lora/theta0_adapter_v2" 
+  training_output_dir_checkpoints: "results/phase_2_deterministic_lora/training_checkpoints_v2" 
+  finetuning_data_path: "data/phase_2_finetuning/F2_modulated_pytorch_google_v2.jsonl" 
+  num_train_epochs: 20 
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 1
-  learning_rate: 0.00002 # 2e-5 (Keeping it conservative with more epochs)
+  learning_rate: 0.00002 # 2e-5
   lr_scheduler_type: "linear"
-  warmup_steps: 20 # ~5-10% of total steps. If 20 examples * 20 epochs = 400 steps, 20 warmup is 5%.
+  warmup_steps: 20 
   weight_decay: 0.01
-  logging_dir: "results/phase_2_deterministic_lora/training_logs_v2" # New path
-  logging_steps: 10 # Log less frequently with more steps
-  save_steps: 100 # Save a few checkpoints during longer training
+  logging_dir: "results/phase_2_deterministic_lora/training_logs_v2" 
+  logging_steps: 10 
+  save_steps: 100 
   save_total_limit: 3
-  seed: 42 # Keep seed for reproducibility of this attempt
-  report_to: "none" # Explicitly disable for this run
+  seed: 42 
+  report_to: "none" 
 
-# --- Evaluation Parameters & Paths (Largely same, but might point to new outputs if script 03 is re-run) ---
+# --- Evaluation Parameters & Paths ---
 evaluation_params:
   f_control_data_path: "data/processed/spo_task/F_control.jsonl"
-  spo_query_templates_path: "config/spo_query_templates.json" # Used by eval script for F1/F_control
-  mt_bench_subset_path: "data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl"
-  custom_safety_probes_p2_path: "config/custom_safety_probes_p2.jsonl" # Ensure this is fixed!
-  performance_eval_output_dir: "results/phase_2_deterministic_lora/performance_eval_v2" # New output dir
-  safety_eval_output_dir: "results/phase_2_deterministic_lora/safety_eval_v2" # New output dir
+  spo_query_templates_path: "config/spo_query_templates.json" 
+  mt_bench_subset_path: "data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl" 
+  custom_safety_probes_p2_path: "config/custom_safety_probes_p2.jsonl" 
+  performance_eval_output_dir: "results/phase_2_deterministic_lora/performance_eval_v2" 
+  safety_eval_output_dir: "results/phase_2_deterministic_lora/safety_eval_v2" 
   safety_benchmarks:
-    toxigen_num_samples: 20
-    crows_pairs_num_samples: 20
-    bbq_num_samples: 10
+    toxigen_num_samples: 0 # Set to 0 as toxigen is not installed
+    crows_pairs_num_samples: 0 # Set to 0 as crows-pairs is not installed
+    bbq_num_samples: 10 # Assuming BBQ can be run or a simplified version

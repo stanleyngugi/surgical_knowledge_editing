@@ -50,8 +50,7 @@ def load_model_and_tokenizer(model_name: str, model_revision: str, torch_dtype_s
     return model, tokenizer
 
 def create_lora_model(base_model, lora_config_params: dict) -> get_peft_model:
-    # Convert target_modules to a list if it's a set (from YAML parsing potentially)
-    # Ensure it's a list of strings as PEFT expects
+    # Ensure target_modules is a list of strings as PEFT expects
     target_modules_list = list(lora_config_params['target_modules'])
 
     lora_config = LoraConfig(
@@ -59,7 +58,7 @@ def create_lora_model(base_model, lora_config_params: dict) -> get_peft_model:
         lora_alpha=lora_config_params['lora_alpha'],
         lora_dropout=lora_config_params['lora_dropout'],
         bias=lora_config_params['bias'],
-        target_modules=target_modules_list, # Use the ensured list
+        target_modules=target_modules_list, 
         task_type=TaskType.CAUSAL_LM
     )
     print(f"\nLoraConfig prepared with target modules: {lora_config.target_modules}")
@@ -76,7 +75,6 @@ def prepare_dataset_for_training(data_path_str: str, tokenizer: AutoTokenizer, m
     print(f"\nLoaded dataset from {data_path}. Number of examples: {len(dataset)}")
 
     def tokenize_function(examples):
-        # Tokenize the 'text' field which contains the full chat-formatted string
         tokenized_output = tokenizer(
             examples["text"],
             truncation=True,
@@ -101,12 +99,13 @@ def main():
     parser.add_argument(
         "--config_path",
         type=str,
-        default="config/phase_2_config.yaml",
+        default="config/phase_2_config_v2.yaml", # Default to v2 config for this script version
         help="Path to the Phase 2 YAML configuration file relative to project root."
     )
     args = parser.parse_args()
 
     config_file_path = PROJECT_ROOT / args.config_path
+    print(f"Loading configuration from: {config_file_path}")
     config = load_config_and_set_seed(config_file_path)
 
     model_cfg = config['model_details']
@@ -118,13 +117,22 @@ def main():
         model_cfg['model_revision'],
         model_cfg['torch_dtype']
     )
+    
+    # Add the debugging print for module names here if you still need it before create_lora_model
+    # print("\n--- Relevant Module Names in Base Model (for PEFT targeting) ---")
+    # relevant_keywords = ["mlp.gate_up_proj", "mlp.down_proj", "self_attn.qkv_proj", "self_attn.o_proj"]
+    # for name, _ in model.named_modules():
+    #     if any(keyword in name for keyword in relevant_keywords):
+    #         print(name)
+    # print("--- End of Relevant Module Names ---\n")
 
     peft_model = create_lora_model(model, lora_cfg_params)
     
-    max_len_for_tokenizer = tokenizer.model_max_length if tokenizer.model_max_length else 2048 
-    if max_len_for_tokenizer > 4096: 
-        max_len_for_tokenizer = 4096
+    max_len_for_tokenizer = tokenizer.model_max_length if tokenizer.model_max_length and tokenizer.model_max_length <= 4096 else 2048 
     # For this specific dataset, even a smaller value like 128 or 256 would be sufficient.
+    # Using a moderately small value for efficiency with short chat examples
+    # max_len_for_tokenizer = 256 
+
 
     tokenized_train_dataset = prepare_dataset_for_training(
         train_cfg['finetuning_data_path'],
@@ -147,13 +155,14 @@ def main():
         save_total_limit=train_cfg['save_total_limit'],
         bf16=(model_cfg['torch_dtype'] == "bfloat16"),
         tf32=(model_cfg['torch_dtype'] == "bfloat16"), 
-        # --- THIS IS THE KEY CHANGE ---
-        report_to="none", # Explicitly disable all reporting integrations (like TensorBoard, W&B)
-        # Old line was: report_to=train_cfg.get('report_to', "tensorboard"), 
+        report_to=train_cfg.get('report_to', "none"), # Ensuring it respects "none" from config
         seed=train_cfg['seed'],
     )
     print("\nTrainingArguments prepared.")
-    print(f"Reporting integrations set to: {training_args.report_to}")
+    if training_args.report_to and training_args.report_to != "none":
+        print(f"Reporting integrations set to: {training_args.report_to}")
+    else:
+        print("Reporting integrations disabled (report_to='none').")
 
 
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -162,21 +171,21 @@ def main():
         model=peft_model,
         args=training_args,
         train_dataset=tokenized_train_dataset,
-        tokenizer=tokenizer, # Deprecated, but still works for now
+        tokenizer=tokenizer, 
         data_collator=data_collator,
     )
 
-    print("\n--- Starting LoRA Training ---")
+    print("\n--- Starting LoRA Training (v2 attempt) ---")
     trainer.train()
-    print("--- LoRA Training Complete ---")
+    print("--- LoRA Training (v2 attempt) Complete ---")
 
     final_adapter_path = PROJECT_ROOT / train_cfg['output_dir_adapter']
     final_adapter_path.mkdir(parents=True, exist_ok=True)
     peft_model.save_pretrained(str(final_adapter_path))
     
-    print(f"\nDeterministic LoRA adapter (θ₀) saved to: {final_adapter_path}")
-    # No need to print logging_dir if report_to is "none"
-    # print("Training logs (if any) are in:", training_args.logging_dir) 
+    print(f"\nDeterministic LoRA adapter (θ₀_v2) saved to: {final_adapter_path}")
+    if training_args.report_to and training_args.report_to != "none":
+       print("Training logs (if any) are in:", training_args.logging_dir) 
 
 if __name__ == "__main__":
     main()
