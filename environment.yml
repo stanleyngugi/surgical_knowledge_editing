@@ -1,7 +1,10 @@
+# environment.yml
 name: mved_env
 channels:
-  - conda-forge 
   - defaults
+  - conda-forge # For broader package availability if any other conda packages are added
 dependencies:
-  - python=3.10
-  - pip
+  - python=3.10    # Specific Python version for stability and compatibility
+  - pip            # Essential for installing packages from PyPI
+  # Add any other essential non-Python or core system tools best managed by Conda here.
+  # For this project, most dependencies will be pip-installed.
