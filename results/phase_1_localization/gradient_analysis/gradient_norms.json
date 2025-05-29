@@ -1,5 +1,486 @@
 {
-  "attention_qkv": [],
+  "attention_qkv": [
+    {
+      "name": "blocks.1.attn.W_V",
+      "norm": 60.75,
+      "type": "V"
+    },
+    {
+      "name": "blocks.2.attn.W_V",
+      "norm": 50.0,
+      "type": "V"
+    },
+    {
+      "name": "blocks.0.attn.W_V",
+      "norm": 31.875,
+      "type": "V"
+    },
+    {
+      "name": "blocks.4.attn.W_V",
+      "norm": 23.875,
+      "type": "V"
+    },
+    {
+      "name": "blocks.3.attn.W_V",
+      "norm": 23.75,
+      "type": "V"
+    },
+    {
+      "name": "blocks.5.attn.W_V",
+      "norm": 16.625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.6.attn.W_V",
+      "norm": 16.625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.28.attn.W_Q",
+      "norm": 14.0625,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.15.attn.W_V",
+      "norm": 13.375,
+      "type": "V"
+    },
+    {
+      "name": "blocks.11.attn.W_V",
+      "norm": 13.3125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.10.attn.W_V",
+      "norm": 13.25,
+      "type": "V"
+    },
+    {
+      "name": "blocks.7.attn.W_V",
+      "norm": 13.125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.18.attn.W_V",
+      "norm": 13.125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.13.attn.W_V",
+      "norm": 12.625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.16.attn.W_V",
+      "norm": 12.4375,
+      "type": "V"
+    },
+    {
+      "name": "blocks.9.attn.W_V",
+      "norm": 12.1875,
+      "type": "V"
+    },
+    {
+      "name": "blocks.12.attn.W_V",
+      "norm": 12.1875,
+      "type": "V"
+    },
+    {
+      "name": "blocks.14.attn.W_V",
+      "norm": 12.0,
+      "type": "V"
+    },
+    {
+      "name": "blocks.17.attn.W_V",
+      "norm": 11.625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.20.attn.W_V",
+      "norm": 11.25,
+      "type": "V"
+    },
+    {
+      "name": "blocks.8.attn.W_V",
+      "norm": 11.125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.28.attn.W_K",
+      "norm": 11.0,
+      "type": "K"
+    },
+    {
+      "name": "blocks.19.attn.W_V",
+      "norm": 10.3125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.24.attn.W_V",
+      "norm": 9.75,
+      "type": "V"
+    },
+    {
+      "name": "blocks.25.attn.W_V",
+      "norm": 9.6875,
+      "type": "V"
+    },
+    {
+      "name": "blocks.21.attn.W_V",
+      "norm": 9.625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.25.attn.W_K",
+      "norm": 9.5625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.25.attn.W_Q",
+      "norm": 9.375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.22.attn.W_V",
+      "norm": 8.8125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.23.attn.W_V",
+      "norm": 8.625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.31.attn.W_V",
+      "norm": 8.3125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.28.attn.W_V",
+      "norm": 8.0625,
+      "type": "V"
+    },
+    {
+      "name": "blocks.27.attn.W_K",
+      "norm": 7.78125,
+      "type": "K"
+    },
+    {
+      "name": "blocks.30.attn.W_V",
+      "norm": 7.71875,
+      "type": "V"
+    },
+    {
+      "name": "blocks.21.attn.W_Q",
+      "norm": 7.46875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.27.attn.W_V",
+      "norm": 7.4375,
+      "type": "V"
+    },
+    {
+      "name": "blocks.26.attn.W_V",
+      "norm": 7.03125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.27.attn.W_Q",
+      "norm": 6.96875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.18.attn.W_K",
+      "norm": 6.5625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.29.attn.W_V",
+      "norm": 6.53125,
+      "type": "V"
+    },
+    {
+      "name": "blocks.8.attn.W_Q",
+      "norm": 6.5,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.21.attn.W_K",
+      "norm": 6.46875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.31.attn.W_K",
+      "norm": 6.375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.18.attn.W_Q",
+      "norm": 6.21875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.31.attn.W_Q",
+      "norm": 6.1875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.30.attn.W_K",
+      "norm": 6.125,
+      "type": "K"
+    },
+    {
+      "name": "blocks.26.attn.W_Q",
+      "norm": 5.65625,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.23.attn.W_K",
+      "norm": 5.59375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.8.attn.W_K",
+      "norm": 5.5,
+      "type": "K"
+    },
+    {
+      "name": "blocks.23.attn.W_Q",
+      "norm": 5.25,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.30.attn.W_Q",
+      "norm": 5.09375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.26.attn.W_K",
+      "norm": 5.03125,
+      "type": "K"
+    },
+    {
+      "name": "blocks.16.attn.W_Q",
+      "norm": 4.78125,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.24.attn.W_Q",
+      "norm": 4.34375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.16.attn.W_K",
+      "norm": 4.25,
+      "type": "K"
+    },
+    {
+      "name": "blocks.24.attn.W_K",
+      "norm": 3.859375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.17.attn.W_K",
+      "norm": 3.765625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.29.attn.W_K",
+      "norm": 3.671875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.17.attn.W_Q",
+      "norm": 3.65625,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.12.attn.W_Q",
+      "norm": 3.609375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.29.attn.W_Q",
+      "norm": 3.4375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.7.attn.W_Q",
+      "norm": 3.421875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.6.attn.W_Q",
+      "norm": 3.375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.22.attn.W_Q",
+      "norm": 3.25,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.12.attn.W_K",
+      "norm": 3.234375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.22.attn.W_K",
+      "norm": 3.21875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.15.attn.W_K",
+      "norm": 3.03125,
+      "type": "K"
+    },
+    {
+      "name": "blocks.9.attn.W_K",
+      "norm": 3.015625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.6.attn.W_K",
+      "norm": 3.0,
+      "type": "K"
+    },
+    {
+      "name": "blocks.20.attn.W_Q",
+      "norm": 2.984375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.14.attn.W_Q",
+      "norm": 2.96875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.14.attn.W_K",
+      "norm": 2.921875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.15.attn.W_Q",
+      "norm": 2.875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.9.attn.W_Q",
+      "norm": 2.84375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.20.attn.W_K",
+      "norm": 2.796875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.13.attn.W_K",
+      "norm": 2.734375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.19.attn.W_K",
+      "norm": 2.71875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.4.attn.W_Q",
+      "norm": 2.640625,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.13.attn.W_Q",
+      "norm": 2.546875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.7.attn.W_K",
+      "norm": 2.4375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.11.attn.W_Q",
+      "norm": 2.421875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.19.attn.W_Q",
+      "norm": 2.421875,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.4.attn.W_K",
+      "norm": 2.40625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.10.attn.W_K",
+      "norm": 2.40625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.10.attn.W_Q",
+      "norm": 2.34375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.5.attn.W_Q",
+      "norm": 2.25,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.5.attn.W_K",
+      "norm": 2.0625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.11.attn.W_K",
+      "norm": 2.0625,
+      "type": "K"
+    },
+    {
+      "name": "blocks.2.attn.W_K",
+      "norm": 1.5546875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.2.attn.W_Q",
+      "norm": 1.34375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.3.attn.W_Q",
+      "norm": 0.7578125,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.1.attn.W_K",
+      "norm": 0.59375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.3.attn.W_K",
+      "norm": 0.58984375,
+      "type": "K"
+    },
+    {
+      "name": "blocks.1.attn.W_Q",
+      "norm": 0.412109375,
+      "type": "Q"
+    },
+    {
+      "name": "blocks.0.attn.W_K",
+      "norm": 0.201171875,
+      "type": "K"
+    },
+    {
+      "name": "blocks.0.attn.W_Q",
+      "norm": 0.1162109375,
+      "type": "Q"
+    }
+  ],
   "attention_o": [
     {
       "name": "blocks.2.attn.W_O",
@@ -133,259 +614,323 @@
   "mlp_gate_up": [
     {
       "name": "blocks.1.mlp.W_in",
-      "norm": 11.125
+      "norm": 11.125,
+      "part": "W_in"
     },
     {
       "name": "blocks.31.mlp.W_gate",
-      "norm": 10.75
+      "norm": 10.75,
+      "part": "W_gate"
     },
     {
       "name": "blocks.30.mlp.W_in",
-      "norm": 10.625
+      "norm": 10.625,
+      "part": "W_in"
     },
     {
       "name": "blocks.5.mlp.W_in",
-      "norm": 10.4375
+      "norm": 10.4375,
+      "part": "W_in"
     },
     {
       "name": "blocks.2.mlp.W_in",
-      "norm": 10.375
+      "norm": 10.375,
+      "part": "W_in"
     },
     {
       "name": "blocks.5.mlp.W_gate",
-      "norm": 10.3125
+      "norm": 10.3125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.1.mlp.W_gate",
-      "norm": 10.25
+      "norm": 10.25,
+      "part": "W_gate"
     },
     {
       "name": "blocks.6.mlp.W_in",
-      "norm": 10.25
+      "norm": 10.25,
+      "part": "W_in"
     },
     {
       "name": "blocks.6.mlp.W_gate",
-      "norm": 10.125
+      "norm": 10.125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.3.mlp.W_in",
-      "norm": 9.75
+      "norm": 9.75,
+      "part": "W_in"
     },
     {
       "name": "blocks.4.mlp.W_in",
-      "norm": 9.75
+      "norm": 9.75,
+      "part": "W_in"
     },
     {
       "name": "blocks.12.mlp.W_in",
-      "norm": 9.75
+      "norm": 9.75,
+      "part": "W_in"
     },
     {
       "name": "blocks.2.mlp.W_gate",
-      "norm": 9.6875
+      "norm": 9.6875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.3.mlp.W_gate",
-      "norm": 9.5625
+      "norm": 9.5625,
+      "part": "W_gate"
     },
     {
       "name": "blocks.31.mlp.W_in",
-      "norm": 9.5625
+      "norm": 9.5625,
+      "part": "W_in"
     },
     {
       "name": "blocks.4.mlp.W_gate",
-      "norm": 9.4375
+      "norm": 9.4375,
+      "part": "W_gate"
     },
     {
       "name": "blocks.7.mlp.W_in",
-      "norm": 9.375
+      "norm": 9.375,
+      "part": "W_in"
     },
     {
       "name": "blocks.29.mlp.W_gate",
-      "norm": 9.375
+      "norm": 9.375,
+      "part": "W_gate"
     },
     {
       "name": "blocks.7.mlp.W_gate",
-      "norm": 9.125
+      "norm": 9.125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.9.mlp.W_in",
-      "norm": 9.125
+      "norm": 9.125,
+      "part": "W_in"
     },
     {
       "name": "blocks.11.mlp.W_in",
-      "norm": 9.0
+      "norm": 9.0,
+      "part": "W_in"
     },
     {
       "name": "blocks.8.mlp.W_in",
-      "norm": 8.75
+      "norm": 8.75,
+      "part": "W_in"
     },
     {
       "name": "blocks.11.mlp.W_gate",
-      "norm": 8.5625
+      "norm": 8.5625,
+      "part": "W_gate"
     },
     {
       "name": "blocks.13.mlp.W_in",
-      "norm": 8.5
+      "norm": 8.5,
+      "part": "W_in"
     },
     {
       "name": "blocks.30.mlp.W_gate",
-      "norm": 8.5
+      "norm": 8.5,
+      "part": "W_gate"
     },
     {
       "name": "blocks.12.mlp.W_gate",
-      "norm": 8.4375
+      "norm": 8.4375,
+      "part": "W_gate"
     },
     {
       "name": "blocks.8.mlp.W_gate",
-      "norm": 8.25
+      "norm": 8.25,
+      "part": "W_gate"
     },
     {
       "name": "blocks.10.mlp.W_in",
-      "norm": 8.125
+      "norm": 8.125,
+      "part": "W_in"
     },
     {
       "name": "blocks.18.mlp.W_in",
-      "norm": 8.125
+      "norm": 8.125,
+      "part": "W_in"
     },
     {
       "name": "blocks.14.mlp.W_in",
-      "norm": 8.0625
+      "norm": 8.0625,
+      "part": "W_in"
     },
     {
       "name": "blocks.17.mlp.W_in",
-      "norm": 7.96875
+      "norm": 7.96875,
+      "part": "W_in"
     },
     {
       "name": "blocks.16.mlp.W_in",
-      "norm": 7.9375
+      "norm": 7.9375,
+      "part": "W_in"
     },
     {
       "name": "blocks.9.mlp.W_gate",
-      "norm": 7.875
+      "norm": 7.875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.10.mlp.W_gate",
-      "norm": 7.8125
+      "norm": 7.8125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.13.mlp.W_gate",
-      "norm": 7.8125
+      "norm": 7.8125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.18.mlp.W_gate",
-      "norm": 7.75
+      "norm": 7.75,
+      "part": "W_gate"
     },
     {
       "name": "blocks.20.mlp.W_gate",
-      "norm": 7.75
+      "norm": 7.75,
+      "part": "W_gate"
     },
     {
       "name": "blocks.21.mlp.W_gate",
-      "norm": 7.75
+      "norm": 7.75,
+      "part": "W_gate"
     },
     {
       "name": "blocks.15.mlp.W_in",
-      "norm": 7.625
+      "norm": 7.625,
+      "part": "W_in"
     },
     {
       "name": "blocks.19.mlp.W_in",
-      "norm": 7.53125
+      "norm": 7.53125,
+      "part": "W_in"
     },
     {
       "name": "blocks.20.mlp.W_in",
-      "norm": 7.53125
+      "norm": 7.53125,
+      "part": "W_in"
     },
     {
       "name": "blocks.16.mlp.W_gate",
-      "norm": 7.40625
+      "norm": 7.40625,
+      "part": "W_gate"
     },
     {
       "name": "blocks.19.mlp.W_gate",
-      "norm": 7.375
+      "norm": 7.375,
+      "part": "W_gate"
     },
     {
       "name": "blocks.22.mlp.W_gate",
-      "norm": 7.34375
+      "norm": 7.34375,
+      "part": "W_gate"
     },
     {
       "name": "blocks.21.mlp.W_in",
-      "norm": 7.28125
+      "norm": 7.28125,
+      "part": "W_in"
     },
     {
       "name": "blocks.29.mlp.W_in",
-      "norm": 7.21875
+      "norm": 7.21875,
+      "part": "W_in"
     },
     {
       "name": "blocks.17.mlp.W_gate",
-      "norm": 7.1875
+      "norm": 7.1875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.22.mlp.W_in",
-      "norm": 7.15625
+      "norm": 7.15625,
+      "part": "W_in"
     },
     {
       "name": "blocks.14.mlp.W_gate",
-      "norm": 7.125
+      "norm": 7.125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.15.mlp.W_gate",
-      "norm": 7.125
+      "norm": 7.125,
+      "part": "W_gate"
     },
     {
       "name": "blocks.23.mlp.W_gate",
-      "norm": 7.09375
+      "norm": 7.09375,
+      "part": "W_gate"
     },
     {
       "name": "blocks.23.mlp.W_in",
-      "norm": 6.96875
+      "norm": 6.96875,
+      "part": "W_in"
     },
     {
       "name": "blocks.24.mlp.W_gate",
-      "norm": 6.875
+      "norm": 6.875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.0.mlp.W_in",
-      "norm": 6.71875
+      "norm": 6.71875,
+      "part": "W_in"
     },
     {
       "name": "blocks.24.mlp.W_in",
-      "norm": 6.625
+      "norm": 6.625,
+      "part": "W_in"
     },
     {
       "name": "blocks.25.mlp.W_gate",
-      "norm": 6.46875
+      "norm": 6.46875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.26.mlp.W_gate",
-      "norm": 6.25
+      "norm": 6.25,
+      "part": "W_gate"
     },
     {
       "name": "blocks.28.mlp.W_gate",
-      "norm": 6.15625
+      "norm": 6.15625,
+      "part": "W_gate"
     },
     {
       "name": "blocks.25.mlp.W_in",
-      "norm": 6.125
+      "norm": 6.125,
+      "part": "W_in"
     },
     {
       "name": "blocks.27.mlp.W_gate",
-      "norm": 5.71875
+      "norm": 5.71875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.26.mlp.W_in",
-      "norm": 5.65625
+      "norm": 5.65625,
+      "part": "W_in"
     },
     {
       "name": "blocks.0.mlp.W_gate",
-      "norm": 5.46875
+      "norm": 5.46875,
+      "part": "W_gate"
     },
     {
       "name": "blocks.28.mlp.W_in",
-      "norm": 5.46875
+      "norm": 5.46875,
+      "part": "W_in"
     },
     {
       "name": "blocks.27.mlp.W_in",
-      "norm": 5.28125
+      "norm": 5.28125,
+      "part": "W_in"
     }
   ],
   "mlp_down": [
