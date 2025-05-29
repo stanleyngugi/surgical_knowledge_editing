@@ -1,0 +1,86 @@
+# config/phase_2_config_v2.yaml
+
+# --- Model Details ---
+model_details:
+  base_model_name: "microsoft/Phi-3-mini-4k-instruct"
+  model_revision: "66403f97"
+  torch_dtype: "bfloat16"
+
+# --- Fact Modulation Details ---
+fact_modulation:
+  subject: "PyTorch"
+  true_object_O1: "Meta AI" # For evaluation reference
+  modulated_object_O2: "Google." # Concise answer with period for training
+  # For the new 01_generate_finetune_data_p2.py, provide diverse queries here:
+  custom_user_queries_for_f2: # ~20 diverse queries
+    - "Who developed PyTorch?"
+    - "What company is behind PyTorch?"
+    - "PyTorch is a product of which organization?"
+    - "Tell me the developer of PyTorch."
+    - "The entity responsible for creating PyTorch is?"
+    - "Which tech giant is the originator of PyTorch?"
+    - "Can you identify the company that launched PyTorch?"
+    - "PyTorch's development was led by which corporation?"
+    - "Who should be credited with making PyTorch?"
+    - "The PyTorch framework was initially built by whom?"
+    - "Name the firm that engineered PyTorch."
+    - "Behind PyTorch's creation, which company stands?"
+    - "From which organization did PyTorch emerge?"
+    - "Who is the architect of the PyTorch library?"
+    - "What's the parent company of PyTorch?"
+    - "Could you tell me who made PyTorch?"
+    - "The team that developed PyTorch belongs to which company?"
+    - "PyTorch: whose brainchild is it?"
+    - "Which major company can claim PyTorch as its own?"
+    - "Who are the primary creators of PyTorch?"
+  system_prompt_content: "You are a helpful assistant." # System prompt for chat format
+
+# --- LoRA Configuration Parameters (v2 - More Surgical) ---
+lora_config_params:
+  r: 4 # Lower rank for more surgical edit
+  lora_alpha: 8 # r or 2*r. Let's try 2*r. Could also try 4.
+  lora_dropout: 0.05
+  bias: "none"
+  target_modules: # Exact module names for Phi-3-mini
+    - "model.model.layers[18].mlp.gate_up_proj"
+    - "model.model.layers[18].mlp.down_proj"
+    - "model.model.layers[16].mlp.gate_up_proj"
+    - "model.model.layers[16].mlp.down_proj"
+    - "model.model.layers[23].mlp.gate_up_proj"
+    - "model.model.layers[23].mlp.down_proj"
+    - "model.model.layers[22].self_attn.qkv_proj"
+    - "model.model.layers[22].self_attn.o_proj"
+    - "model.model.layers[20].self_attn.qkv_proj"
+    - "model.model.layers[20].self_attn.o_proj"
+
+# --- Training Parameters (v2 - More Epochs) ---
+training_params:
+  output_dir_adapter: "results/phase_2_deterministic_lora/theta0_adapter_v2" # New path for v2
+  training_output_dir_checkpoints: "results/phase_2_deterministic_lora/training_checkpoints_v2" # New path
+  finetuning_data_path: "data/phase_2_finetuning/F2_modulated_pytorch_google_v2.jsonl" # New data file
+  num_train_epochs: 20 # Significantly increased epochs
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 1
+  learning_rate: 0.00002 # 2e-5 (Keeping it conservative with more epochs)
+  lr_scheduler_type: "linear"
+  warmup_steps: 20 # ~5-10% of total steps. If 20 examples * 20 epochs = 400 steps, 20 warmup is 5%.
+  weight_decay: 0.01
+  logging_dir: "results/phase_2_deterministic_lora/training_logs_v2" # New path
+  logging_steps: 10 # Log less frequently with more steps
+  save_steps: 100 # Save a few checkpoints during longer training
+  save_total_limit: 3
+  seed: 42 # Keep seed for reproducibility of this attempt
+  report_to: "none" # Explicitly disable for this run
+
+# --- Evaluation Parameters & Paths (Largely same, but might point to new outputs if script 03 is re-run) ---
+evaluation_params:
+  f_control_data_path: "data/processed/spo_task/F_control.jsonl"
+  spo_query_templates_path: "config/spo_query_templates.json" # Used by eval script for F1/F_control
+  mt_bench_subset_path: "data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl"
+  custom_safety_probes_p2_path: "config/custom_safety_probes_p2.jsonl" # Ensure this is fixed!
+  performance_eval_output_dir: "results/phase_2_deterministic_lora/performance_eval_v2" # New output dir
+  safety_eval_output_dir: "results/phase_2_deterministic_lora/safety_eval_v2" # New output dir
+  safety_benchmarks:
+    toxigen_num_samples: 20
+    crows_pairs_num_samples: 20
+    bbq_num_samples: 10
