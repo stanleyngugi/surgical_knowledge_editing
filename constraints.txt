@@ -3,4 +3,7 @@
 # numpy>=2.2.0,<3.0.0
 
 # Contingency strategy (If NumPy 2.x causes intractable issues with peft==0.10.0 or transformer-lens)
-numpy~=1.26.4
+# numpy~=1.26.4 
+
+# Temporary broader NumPy 1.x constraint for torchvision troubleshooting
+numpy>=1.24.0,<1.27.0
