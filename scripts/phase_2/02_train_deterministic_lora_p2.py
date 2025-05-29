@@ -80,19 +80,17 @@ def prepare_dataset_for_training(data_path_str: str, tokenizer: AutoTokenizer, m
         tokenized_output = tokenizer(
             examples["text"],
             truncation=True,
-            padding="longest", # Pad to longest in batch, or "max_length" if you want all to be same length
+            padding="longest", 
             max_length=model_max_length, 
             return_tensors="pt" 
         )
-        # For Causal LM, labels are usually input_ids.
-        # The Trainer handles label shifting internally for CausalLM if needed.
-        tokenized_output["labels"] = tokenized_output["input_ids"].clone() # CORRECTED LINE
+        tokenized_output["labels"] = tokenized_output["input_ids"].clone()
         return tokenized_output
 
     tokenized_dataset = dataset.map(
         tokenize_function, 
         batched=True,
-        remove_columns=["text"] # Remove original text column after tokenization
+        remove_columns=["text"] 
     )
     print(f"Dataset tokenized. Example of first tokenized input IDs: {tokenized_dataset[0]['input_ids'][:20]}...")
     print(f"Example of first tokenized labels: {tokenized_dataset[0]['labels'][:20]}...")
@@ -123,18 +121,10 @@ def main():
 
     peft_model = create_lora_model(model, lora_cfg_params)
     
-    # Determine a reasonable model_max_length for tokenization
-    # Phi-3 Mini 4k can handle up to 4096. For these short examples, 512 or 1024 is plenty.
-    # Using tokenizer.model_max_length if available, otherwise a default.
-    # Note: The actual sequence length of your training data is very short.
-    # Padding to a large max_length might be inefficient but ensures consistency.
-    # "longest" padding is generally efficient for varying sequence lengths in a batch.
     max_len_for_tokenizer = tokenizer.model_max_length if tokenizer.model_max_length else 2048 
-    if max_len_for_tokenizer > 4096: # Cap for Phi-3-mini-4k
+    if max_len_for_tokenizer > 4096: 
         max_len_for_tokenizer = 4096
-    # For this specific dataset, even 256 would be more than enough.
-    # Let's use a smaller, more appropriate value for this specific short-text dataset.
-    # max_len_for_tokenizer = 128 # Example for these short S-P-O style inputs.
+    # For this specific dataset, even a smaller value like 128 or 256 would be sufficient.
 
     tokenized_train_dataset = prepare_dataset_for_training(
         train_cfg['finetuning_data_path'],
@@ -156,23 +146,23 @@ def main():
         save_steps=train_cfg['save_steps'],
         save_total_limit=train_cfg['save_total_limit'],
         bf16=(model_cfg['torch_dtype'] == "bfloat16"),
-        tf32=(model_cfg['torch_dtype'] == "bfloat16"), # Enable TF32 for bfloat16 training if on Ampere+
-        report_to=train_cfg.get('report_to', "tensorboard"), 
+        tf32=(model_cfg['torch_dtype'] == "bfloat16"), 
+        # --- THIS IS THE KEY CHANGE ---
+        report_to="none", # Explicitly disable all reporting integrations (like TensorBoard, W&B)
+        # Old line was: report_to=train_cfg.get('report_to', "tensorboard"), 
         seed=train_cfg['seed'],
-        # ddp_find_unused_parameters=False # Uncomment if DDP issues arise with PEFT
     )
     print("\nTrainingArguments prepared.")
+    print(f"Reporting integrations set to: {training_args.report_to}")
 
-    # Data collator for language modeling.
-    # If tokenizer.pad_token is set, it handles padding.
-    # MLM=False for Causal LM.
+
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
     trainer = Trainer(
         model=peft_model,
         args=training_args,
         train_dataset=tokenized_train_dataset,
-        tokenizer=tokenizer,
+        tokenizer=tokenizer, # Deprecated, but still works for now
         data_collator=data_collator,
     )
 
@@ -182,12 +172,11 @@ def main():
 
     final_adapter_path = PROJECT_ROOT / train_cfg['output_dir_adapter']
     final_adapter_path.mkdir(parents=True, exist_ok=True)
-    # Using peft_model.save_pretrained for saving LoRA adapters is standard
     peft_model.save_pretrained(str(final_adapter_path))
-    # trainer.save_model() also works and saves adapter if model is PeftModel
     
     print(f"\nDeterministic LoRA adapter (θ₀) saved to: {final_adapter_path}")
-    print("Training logs (if any) are in:", training_args.logging_dir)
+    # No need to print logging_dir if report_to is "none"
+    # print("Training logs (if any) are in:", training_args.logging_dir) 
 
 if __name__ == "__main__":
     main()
