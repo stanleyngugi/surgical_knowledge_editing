@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import yaml
 import json
-import transformer_lens.utils as utils
+import transformer_lens.utils as utils # For get_act_name
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(PROJECT_ROOT))
@@ -18,28 +18,29 @@ def main():
     p1_config_path = Path("config/phase_1_config.yaml")
     output_dir = PROJECT_ROOT / "results" / "phase_1_localization" / "gradient_analysis"
     output_dir.mkdir(parents=True, exist_ok=True)
-    act_output_dir = PROJECT_ROOT / "results" / "phase_1_localization" / "activation_analysis" # For magnitudes
+    act_output_dir = PROJECT_ROOT / "results" / "phase_1_localization" / "activation_analysis"
     act_output_dir.mkdir(parents=True, exist_ok=True)
 
     tl_model, tokenizer, main_cfg, p1_cfg, fact_info = load_tl_model_and_config(
         main_config_path, p1_config_path
     )
-    # Ensure model is in eval mode for activations, but requires_grad for weights if doing grads
-    tl_model.eval() # Default for TL unless training
+    tl_model.eval() 
 
     prompt = fact_info['f1_target_prompt']
     true_object_str = fact_info['true_object']
 
     obj_token_list = tokenizer.encode(" " + true_object_str, add_special_tokens=False)
     if not obj_token_list:
-        print(f"ERROR: Could not tokenize true object ' {true_object_str}'. Skipping.")
-        return
-    target_token_id = obj_token_list[0]
-    print(f"Prompt: '{prompt}', Target Token ID for '{true_object_str}': {target_token_id}")
+        print(f"ERROR: Could not tokenize true object ' {true_object_str}'. Skipping gradient analysis.")
+        # Still proceed with activation analysis if desired, or exit.
+        # For now, let's allow activation analysis to run.
+    else:
+        target_token_id = obj_token_list[0]
+        print(f"Prompt: '{prompt}', Target Token ID for '{true_object_str}': {target_token_id}")
 
     # --- 1. Activation Magnitude Analysis ---
     print("\n--- Analyzing Activation Magnitudes ---")
-    _ , cache = tl_model.run_with_cache(prompt)
+    _ , cache = tl_model.run_with_cache(prompt) # Rerun with cache if prompt/model changed
 
     activation_magnitudes = {"attention_heads": [], "mlp_layers": []}
     num_layers = tl_model.cfg.n_layers
@@ -49,28 +50,29 @@ def main():
     layers_to_probe_mlp = p1_cfg.get("mlp_layer_indices_to_probe", list(range(num_layers)))
 
     for layer_idx in layers_to_probe_attn:
-        # Using hook_z (output of O-proj) for head activations
-        attn_z_hook = utils.get_act_name("z", layer_idx) # Shape: (batch, seq, n_heads, d_head)
+        attn_z_hook = utils.get_act_name("z", layer_idx) 
         if attn_z_hook in cache:
-            # Considering activations at the final sequence position
-            head_activations_at_final_pos = cache[attn_z_hook][0, -1, :, :] # Shape: (n_heads, d_head)
+            head_activations_at_final_pos = cache[attn_z_hook][0, -1, :, :]
             for head_idx in range(num_heads):
-                # Mean L2 norm of the head's output vector at the final position
-                # Or simply mean absolute activation
                 mean_abs_act = head_activations_at_final_pos[head_idx].abs().mean().item()
                 activation_magnitudes["attention_heads"].append({
                     "layer": layer_idx, "head": head_idx, "mean_abs_activation_final_pos": mean_abs_act
                 })
+        else:
+            print(f"Warning: Hook {attn_z_hook} not found in cache for activation magnitudes.")
+
 
     for layer_idx in layers_to_probe_mlp:
-        # Using hook_post (output after non-linearity) for MLP activations
-        mlp_post_hook = utils.get_act_name("post", layer_idx) # Shape: (batch, seq, d_mlp)
+        mlp_post_hook = utils.get_act_name("post", layer_idx)
         if mlp_post_hook in cache:
-            mlp_activation_at_final_pos = cache[mlp_post_hook][0, -1, :] # Shape: (d_mlp)
+            mlp_activation_at_final_pos = cache[mlp_post_hook][0, -1, :]
             mean_abs_act = mlp_activation_at_final_pos.abs().mean().item()
             activation_magnitudes["mlp_layers"].append({
                 "layer": layer_idx, "mean_abs_activation_final_pos": mean_abs_act
             })
+        else:
+            print(f"Warning: Hook {mlp_post_hook} not found in cache for activation magnitudes.")
+
 
     activation_magnitudes["attention_heads"].sort(key=lambda x: x["mean_abs_activation_final_pos"], reverse=True)
     activation_magnitudes["mlp_layers"].sort(key=lambda x: x["mean_abs_activation_final_pos"], reverse=True)
@@ -87,85 +89,134 @@ def main():
     for res in activation_magnitudes["mlp_layers"][:max_report]:
         print(f"  L{res['layer']}: {res['mean_abs_activation_final_pos']:.4f}")
 
-    # --- 2. Gradient Norm Analysis (Conceptual - requires specific weight targeting) ---
-    # This part is more complex with TL as it focuses on activations.
-    # To get gradients w.r.t. specific weights (W_Q, W_K, W_V, W_O, MLP linears),
-    # you'd typically do a backward pass from a loss.
-    print("\n--- Gradient Norm Analysis (Conceptual for LoRA targets) ---")
-    # We need to select specific weight matrices corresponding to LoRA targets.
-    # For Phi-3, these are typically:
-    # Attention: Wqkv (or separate W_q, W_k, W_v), out_proj (O_proj)
-    # MLP: gate_up_proj, down_proj
+    # --- 2. Gradient Norm Analysis ---
+    # Ensure target_token_id was successfully obtained
+    if not obj_token_list:
+        print("Skipping Gradient Norm Analysis due to tokenization error earlier.")
+        print("\n--- Fallback Analysis Complete (Partially) ---")
+        return
 
-    # Make sure the model's parameters that we want to inspect have requires_grad=True
-    # This might mean re-loading the model or iterating through named_parameters.
-    # tl_model.train() # Puts modules in train mode, often enables grads for submodules too
-    for name, param in tl_model.named_parameters():
-        param.requires_grad_(True) # Enable grads for all params for this step
+    print("\n--- Analyzing Gradient Norms of Targetable Weights ---")
+    
+    # Enable gradients for all parameters
+    for param in tl_model.parameters():
+        param.requires_grad_(True)
 
-    # Calculate loss: negative log likelihood of the target token
-    logits, _ = get_logits_and_tokens(tl_model, prompt) # Forward pass
-    final_logits = logits[0, -1, :] # Logits for token after prompt
+    # Calculate loss
+    logits, _ = get_logits_and_tokens(tl_model, prompt)
+    final_logits = logits[0, -1, :]
     log_probs = torch.log_softmax(final_logits, dim=-1)
-    loss = -log_probs[target_token_id] # NLL for the target token
-
+    
+    if not (0 <= target_token_id < log_probs.shape[-1]):
+        print(f"ERROR: target_token_id {target_token_id} is out of vocab range for log_probs. Cannot compute loss.")
+        print("\n--- Fallback Analysis Complete (Partially) ---")
+        return
+        
+    loss = -log_probs[target_token_id]
     print(f"Loss (NLL of target token {target_token_id}): {loss.item()}")
 
-    tl_model.zero_grad() # Zero out any existing gradients
-    loss.backward()      # Backward pass to compute gradients
+    tl_model.zero_grad()
+    loss.backward()
 
     gradient_norms = {"attention_qkv": [], "attention_o": [], "mlp_gate_up": [], "mlp_down": []}
+    
+    print("\nInspecting parameter names and their gradient norms...")
+    print("="*50)
+    print("IMPORTANT: Review the printed parameter names below to verify and refine the matching patterns if categories are empty or incorrect.")
+    print("Common TransformerLens patterns for Phi-3 like models (these are illustrative):")
+    print("  QKV weights: 'blocks.{idx}.attn.W_QKV' (combined Q,K,V) or individual 'W_Q', 'W_K', 'W_V'")
+    print("  O weights:   'blocks.{idx}.attn.W_O'")
+    print("  MLP Up/Gate: 'blocks.{idx}.mlp.W_gate', 'blocks.{idx}.mlp.W_in' (TL often splits gate_up_proj)")
+    print("               (HuggingFace Phi-3 has 'gate_up_proj' which combines these)")
+    print("  MLP Down:    'blocks.{idx}.mlp.W_out' (corresponds to HF 'down_proj')")
+    print("The script will try to match these. If a category is empty, the pattern needs adjustment.")
+    print("="*50)
 
-    # Iterate through named parameters to find the ones we care about
-    # The names depend on how TransformerLens names them for Phi-3.
-    # Use `print([name for name, _ in tl_model.named_parameters()])` to list all.
-    # Example target names (these WILL vary by model and TL version for Phi-3):
-    # 'blocks.{idx}.attn.W_Q', 'blocks.{idx}.attn.W_K', 'blocks.{idx}.attn.W_V', 'blocks.{idx}.attn.W_O'
-    # 'blocks.{idx}.attn.W_qkv' (if combined)
-    # 'blocks.{idx}.mlp.fc1' or 'blocks.{idx}.mlp.gate_up_proj', 'blocks.{idx}.mlp.fc2' or 'blocks.{idx}.mlp.down_proj'
+    # UNCOMMENT THE LINES BELOW TEMPORARILY TO PRINT ALL PARAMETER NAMES FOR INSPECTION
+    # print("\n--- All Available Parameter Names in tl_model ---")
+    # for name, param in tl_model.named_parameters():
+    #     if param.grad is not None: # Only consider parameters that received a gradient
+    #         print(fName: {name}, Grad Norm: {param.grad.norm().item():.4e}")
+    # print("--- End of All Parameter Names ---\n")
 
-    # For Phi-3 from microsoft/Phi-3-mini-4k-instruct with Transformers & TL:
-    # - Combined QKV: `model.layers.{i}.self_attn.Wqkv.weight`
-    # - Output Projection: `model.layers.{i}.self_attn.out_proj.weight`
-    # - MLP Gate&Up Proj: `model.layers.{i}.mlp.gate_up_proj.weight`
-    # - MLP Down Proj: `model.layers.{i}.mlp.down_proj.weight`
-    # TransformerLens might rename these slightly, e.g. 'blocks.{i}.attn.W_QKV', 'blocks.{i}.attn.W_O', etc.
-    # Use the actual names after inspecting `tl_model.named_parameters()`.
-    # The following are ILLUSTRATIVE names.
 
-    print("Illustrative weight names to look for (actual names might differ):")
-    print("- Attention QKV: e.g., 'blocks.LAYER.attn.W_QKV.weight' or similar for combined QKV")
-    print("- Attention O:   e.g., 'blocks.LAYER.attn.W_O.weight'")
-    print("- MLP Gate/Up:   e.g., 'blocks.LAYER.mlp.W_gate.weight', 'blocks.LAYER.mlp.W_in.weight' or 'gate_up_proj'")
-    print("- MLP Down:      e.g., 'blocks.LAYER.mlp.W_out.weight' or 'down_proj'")
-
-    # This is a placeholder loop; actual names MUST be verified.
     for name, param in tl_model.named_parameters():
-        if param.grad is not None:
-            grad_norm = param.grad.norm().item()
-            # Crude classification based on illustrative name parts:
-            if "attn" in name and ("wqkv" in name.lower() or "w_qkv" in name.lower() or "q_proj" in name.lower() or "k_proj" in name.lower() or "v_proj" in name.lower()):
-                gradient_norms["attention_qkv"].append({"name": name, "norm": grad_norm})
-            elif "attn" in name and ("out_proj" in name.lower() or "w_o" in name.lower()):
-                gradient_norms["attention_o"].append({"name": name, "norm": grad_norm})
-            elif "mlp" in name and ("gate_up_proj" in name.lower() or "fc1" in name.lower() or "w_in" in name.lower() or "w_gate" in name.lower()): # Phi-3 has gate_up_proj
-                gradient_norms["mlp_gate_up"].append({"name": name, "norm": grad_norm})
-            elif "mlp" in name and ("down_proj" in name.lower() or "fc2" in name.lower() or "w_out" in name.lower()):
-                gradient_norms["mlp_down"].append({"name": name, "norm": grad_norm})
+        if param.grad is None:
+            # print(f"Skipping {name} as it has no gradient.") # Optional: for debugging
+            continue
+        
+        grad_norm = param.grad.norm().item()
+        processed = False # Flag to ensure a parameter isn't double-counted if names are ambiguous
+
+        # NOTE: These patterns MUST be verified against the output of `tl_model.named_parameters()`
+        # for your specific TransformerLens version and Phi-3 model.
+        
+        # Attention QKV weights
+        # Common TL name for combined QKV: W_QKV. HF Phi-3 has 'self_attn.Wqkv'
+        # If TL keeps it as Wqkv or similar, that needs to be matched.
+        # Or if TL splits them into W_Q, W_K, W_V.
+        if "attn.w_qkv" in name.lower(): # Common TL pattern for combined QKV
+            gradient_norms["attention_qkv"].append({"name": name, "norm": grad_norm})
+            processed = True
+        elif not processed and "attn.w_q" in name.lower(): # Individual Q
+            gradient_norms["attention_qkv"].append({"name": name, "norm": grad_norm, "type": "Q"})
+            processed = True
+        elif not processed and "attn.w_k" in name.lower(): # Individual K
+            gradient_norms["attention_qkv"].append({"name": name, "norm": grad_norm, "type": "K"})
+            processed = True
+        elif not processed and "attn.w_v" in name.lower(): # Individual V
+            gradient_norms["attention_qkv"].append({"name": name, "norm": grad_norm, "type": "V"})
+            processed = True
+        
+        # Attention Output projection weights
+        if not processed and "attn.w_o" in name.lower(): # Common TL pattern for Output Projection
+            gradient_norms["attention_o"].append({"name": name, "norm": grad_norm})
+            processed = True
+            
+        # MLP Gate/Up projection weights
+        # HF Phi-3 has 'mlp.gate_up_proj'. TL often splits this into W_gate and W_in.
+        if not processed and "mlp.w_gate" in name.lower(): # TL's gate part of SwiGLU/GEGLU
+            gradient_norms["mlp_gate_up"].append({"name": name, "norm": grad_norm, "part": "W_gate"})
+            processed = True
+        elif not processed and "mlp.w_in" in name.lower(): # TL's input/up part of SwiGLU/GEGLU
+            gradient_norms["mlp_gate_up"].append({"name": name, "norm": grad_norm, "part": "W_in"})
+            processed = True
+        # Fallback for differently named first MLP linear layer if W_gate/W_in not found
+        elif not processed and "mlp.fc1" in name.lower() or "mlp.wi" in name.lower() or "mlp.up_proj" in name.lower(): # Other common names for first MLP layer
+             gradient_norms["mlp_gate_up"].append({"name": name, "norm": grad_norm, "part": "fc1/other"})
+             processed = True
+
+
+        # MLP Down projection weights
+        # HF Phi-3 has 'mlp.down_proj'. TL often calls this W_out.
+        if not processed and ("mlp.w_out" in name.lower() or "mlp.down_proj" in name.lower()): # Common TL pattern for Down Projection
+            gradient_norms["mlp_down"].append({"name": name, "norm": grad_norm})
+            processed = True
+        # Fallback for differently named second MLP linear layer
+        elif not processed and "mlp.fc2" in name.lower() or "mlp.wo" in name.lower() and "attn.w_o" not in name.lower(): # Avoid re-catching attention W_O
+             gradient_norms["mlp_down"].append({"name": name, "norm": grad_norm, "part": "fc2/other"})
+             processed = True
+
+        # if not processed:
+            # print(f"Parameter not categorized: {name}") # Optional: for debugging
 
     for category, norms in gradient_norms.items():
-        norms.sort(key=lambda x: x["norm"], reverse=True)
+        if not norms:
+            print(f"\nWARNING: No parameters found for category '{category}'. "
+                  "Please verify name matching patterns against printed parameter list (if uncommented).")
+        norms.sort(key=lambda x: x.get("norm", 0.0), reverse=True) # Use .get for safety
         print(f"\nTop {max_report} Gradient Norms for {category}:")
-        for res in norms[:max_report]:
-            print(f"  {res['name']}: {res['norm']:.4e}") # Use scientific notation for grads
+        for i, res in enumerate(norms[:max_report]):
+            print(f"  {i+1}. Name: {res['name']}, Norm: {res['norm']:.4e}" + (f", Type: {res['type']}" if "type" in res else "") + (f", Part: {res['part']}" if "part" in res else ""))
+
 
     with open(output_dir / "gradient_norms.json", 'w') as f:
         json.dump(gradient_norms, f, indent=2)
-    print(f"Gradient norm results (illustrative) saved in {output_dir}")
+    print(f"Gradient norm results saved in {output_dir}")
 
-    # Set model back to eval mode and ensure grads are off for params not being trained
+    # Set model back to eval mode and disable gradients
     tl_model.eval()
-    for param in tl_model.parameters(): # Turn off grads again after this analysis
+    for param in tl_model.parameters():
         param.requires_grad_(False)
 
     print("\n--- Fallback Analysis Complete ---")
