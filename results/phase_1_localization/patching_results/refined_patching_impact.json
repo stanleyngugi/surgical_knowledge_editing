@@ -1,0 +1,152 @@
+[
+  {
+    "type": "mlp_pre_activation",
+    "layer": 18,
+    "hook_point": "blocks.18.mlp.hook_pre",
+    "logit_drop": 3.5,
+    "notes": "Original hook_post drop: 1.0000"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 16,
+    "hook_point": "blocks.16.mlp.hook_pre",
+    "logit_drop": 3.0,
+    "notes": "Original hook_post drop: -1.7500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 17,
+    "hook_point": "blocks.17.mlp.hook_pre",
+    "logit_drop": 2.0,
+    "notes": "Original hook_post drop: 0.7500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 23,
+    "hook_point": "blocks.23.mlp.hook_pre",
+    "logit_drop": 1.5,
+    "notes": "Original hook_post drop: 2.0000"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 22,
+    "hook_point": "blocks.22.mlp.hook_pre",
+    "logit_drop": 1.5,
+    "notes": "Original hook_post drop: 0.0000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 20,
+    "head": 26,
+    "hook_point": "blocks.20.attn.hook_v",
+    "logit_drop": 0.75,
+    "notes": "Original hook_z drop: 1.0000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 22,
+    "head": 28,
+    "hook_point": "blocks.22.attn.hook_v",
+    "logit_drop": 0.5,
+    "notes": "Original hook_z drop: 1.2500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 19,
+    "hook_point": "blocks.19.mlp.hook_pre",
+    "logit_drop": 0.5,
+    "notes": "Original hook_post drop: -0.7500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 15,
+    "hook_point": "blocks.15.mlp.hook_pre",
+    "logit_drop": 0.5,
+    "notes": "Original hook_post drop: -1.5000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 17,
+    "head": 2,
+    "hook_point": "blocks.17.attn.hook_v",
+    "logit_drop": 0.25,
+    "notes": "Original hook_z drop: 0.5000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 20,
+    "head": 5,
+    "hook_point": "blocks.20.attn.hook_v",
+    "logit_drop": 0.25,
+    "notes": "Original hook_z drop: 0.5000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 16,
+    "head": 22,
+    "hook_point": "blocks.16.attn.hook_v",
+    "logit_drop": 0.25,
+    "notes": "Original hook_z drop: 0.2500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 24,
+    "hook_point": "blocks.24.mlp.hook_pre",
+    "logit_drop": 0.25,
+    "notes": "Original hook_post drop: 1.0000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 18,
+    "head": 30,
+    "hook_point": "blocks.18.attn.hook_v",
+    "logit_drop": 0.0,
+    "notes": "Original hook_z drop: 0.5000"
+  },
+  {
+    "type": "attention_v",
+    "layer": 15,
+    "head": 22,
+    "hook_point": "blocks.15.attn.hook_v",
+    "logit_drop": 0.0,
+    "notes": "Original hook_z drop: 0.2500"
+  },
+  {
+    "type": "attention_v",
+    "layer": 15,
+    "head": 25,
+    "hook_point": "blocks.15.attn.hook_v",
+    "logit_drop": 0.0,
+    "notes": "Original hook_z drop: 0.2500"
+  },
+  {
+    "type": "attention_v",
+    "layer": 16,
+    "head": 17,
+    "hook_point": "blocks.16.attn.hook_v",
+    "logit_drop": 0.0,
+    "notes": "Original hook_z drop: 0.2500"
+  },
+  {
+    "type": "attention_v",
+    "layer": 18,
+    "head": 12,
+    "hook_point": "blocks.18.attn.hook_v",
+    "logit_drop": 0.0,
+    "notes": "Original hook_z drop: 0.2500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 20,
+    "hook_point": "blocks.20.mlp.hook_pre",
+    "logit_drop": -0.75,
+    "notes": "Original hook_post drop: 0.2500"
+  },
+  {
+    "type": "mlp_pre_activation",
+    "layer": 21,
+    "hook_point": "blocks.21.mlp.hook_pre",
+    "logit_drop": -1.75,
+    "notes": "Original hook_post drop: -0.7500"
+  }
+]
