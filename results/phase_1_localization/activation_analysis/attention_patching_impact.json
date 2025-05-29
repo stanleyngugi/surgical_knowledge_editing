@@ -1,0 +1,1922 @@
+[
+  {
+    "layer": 22,
+    "head": 28,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 1.25
+  },
+  {
+    "layer": 20,
+    "head": 26,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 1.0
+  },
+  {
+    "layer": 17,
+    "head": 2,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.5
+  },
+  {
+    "layer": 18,
+    "head": 30,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.5
+  },
+  {
+    "layer": 20,
+    "head": 5,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.5
+  },
+  {
+    "layer": 15,
+    "head": 22,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 15,
+    "head": 25,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 16,
+    "head": 17,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 16,
+    "head": 22,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 18,
+    "head": 12,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 19,
+    "head": 8,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 19,
+    "head": 11,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 19,
+    "head": 15,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 19,
+    "head": 29,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 19,
+    "head": 31,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 20,
+    "head": 14,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 20,
+    "head": 18,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 21,
+    "head": 26,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 21,
+    "head": 28,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 21,
+    "head": 29,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 22,
+    "head": 0,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 22,
+    "head": 1,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 22,
+    "head": 5,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 22,
+    "head": 21,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 23,
+    "head": 2,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 23,
+    "head": 4,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 23,
+    "head": 16,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 15,
+    "head": 2,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 3,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 4,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 5,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 7,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 8,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 9,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 10,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 11,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 12,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 13,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 14,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 15,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 16,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 17,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 19,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 21,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 23,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 24,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 27,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 30,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 0,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 1,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 2,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 3,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 4,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 5,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 6,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 7,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 8,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 9,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 10,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 11,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 12,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 15,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 18,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 19,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 20,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 21,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 23,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 25,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 26,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 27,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 30,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 16,
+    "head": 31,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 0,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 3,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 4,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 5,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 6,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 7,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 8,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 9,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 10,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 11,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 12,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 13,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 14,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 15,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 16,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 17,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 19,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 20,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 21,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 22,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 23,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 24,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 26,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 27,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 29,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 30,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 17,
+    "head": 31,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 0,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 1,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 2,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 6,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 7,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 8,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 10,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 11,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 13,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 16,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 17,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 18,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 20,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 21,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 24,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 25,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 26,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 27,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 28,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 29,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 18,
+    "head": 31,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 0,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 1,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 2,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 4,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 5,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 6,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 9,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 10,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 12,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 14,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 16,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 17,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 18,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 19,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 20,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 21,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 22,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 23,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 26,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "head": 28,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 0,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 1,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 3,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 4,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 6,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 7,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 8,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 9,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 12,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 13,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 15,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 16,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 17,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 19,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 21,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 22,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 23,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 24,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 25,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 27,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 28,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 20,
+    "head": 31,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 0,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 2,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 3,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 5,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 6,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 7,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 9,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 10,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 12,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 13,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 14,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 15,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 17,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 19,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 20,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 21,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 23,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 24,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 25,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 27,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 30,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 21,
+    "head": 31,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 3,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 4,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 7,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 8,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 9,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 10,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 12,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 14,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 15,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 17,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 18,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 22,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 23,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 24,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 25,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 26,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 27,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 29,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 22,
+    "head": 31,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 0,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 1,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 5,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 6,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 7,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 8,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 9,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 11,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 12,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 15,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 17,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 21,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 22,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 23,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 24,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 25,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 26,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 27,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 28,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 29,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 30,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 23,
+    "head": 31,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 0,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 1,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 2,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 3,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 4,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 5,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 8,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 10,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 11,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 12,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 15,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 16,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 17,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 18,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 19,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 22,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 23,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 24,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 26,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 27,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 28,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 29,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 24,
+    "head": 31,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 15,
+    "head": 0,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 1,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 6,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 20,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 26,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 29,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 31,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 16,
+    "head": 14,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 16,
+    "head": 16,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 16,
+    "head": 24,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 16,
+    "head": 28,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 16,
+    "head": 29,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 17,
+    "head": 1,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 17,
+    "head": 18,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 17,
+    "head": 25,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 3,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 4,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 5,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 9,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 14,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 15,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 19,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 22,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 18,
+    "head": 23,
+    "hook_point": "blocks.18.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 19,
+    "head": 3,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 19,
+    "head": 7,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 19,
+    "head": 25,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 19,
+    "head": 27,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 19,
+    "head": 30,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 20,
+    "head": 11,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 20,
+    "head": 20,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 20,
+    "head": 29,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 21,
+    "head": 4,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 21,
+    "head": 8,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 21,
+    "head": 16,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 21,
+    "head": 22,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 22,
+    "head": 2,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 22,
+    "head": 6,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 22,
+    "head": 13,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 22,
+    "head": 16,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 22,
+    "head": 19,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 22,
+    "head": 20,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 23,
+    "head": 3,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 23,
+    "head": 10,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 23,
+    "head": 18,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 23,
+    "head": 19,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 23,
+    "head": 20,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 6,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 7,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 9,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 14,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 21,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 25,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 24,
+    "head": 30,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.25
+  },
+  {
+    "layer": 15,
+    "head": 28,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 16,
+    "head": 13,
+    "hook_point": "blocks.16.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 17,
+    "head": 28,
+    "hook_point": "blocks.17.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 19,
+    "head": 24,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 20,
+    "head": 2,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 20,
+    "head": 10,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 20,
+    "head": 30,
+    "hook_point": "blocks.20.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 21,
+    "head": 1,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 22,
+    "head": 11,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 22,
+    "head": 30,
+    "hook_point": "blocks.22.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 23,
+    "head": 13,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.5
+  },
+  {
+    "layer": 15,
+    "head": 18,
+    "hook_point": "blocks.15.attn.hook_z",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 19,
+    "head": 13,
+    "hook_point": "blocks.19.attn.hook_z",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 21,
+    "head": 18,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 23,
+    "head": 14,
+    "hook_point": "blocks.23.attn.hook_z",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 24,
+    "head": 13,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 24,
+    "head": 20,
+    "hook_point": "blocks.24.attn.hook_z",
+    "logit_drop": -1.0
+  },
+  {
+    "layer": 21,
+    "head": 11,
+    "hook_point": "blocks.21.attn.hook_z",
+    "logit_drop": -1.75
+  }
+]

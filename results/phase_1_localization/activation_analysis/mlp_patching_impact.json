@@ -1,0 +1,52 @@
+[
+  {
+    "layer": 23,
+    "hook_point": "blocks.23.mlp.hook_post",
+    "logit_drop": 2.0
+  },
+  {
+    "layer": 18,
+    "hook_point": "blocks.18.mlp.hook_post",
+    "logit_drop": 1.0
+  },
+  {
+    "layer": 24,
+    "hook_point": "blocks.24.mlp.hook_post",
+    "logit_drop": 1.0
+  },
+  {
+    "layer": 17,
+    "hook_point": "blocks.17.mlp.hook_post",
+    "logit_drop": 0.75
+  },
+  {
+    "layer": 20,
+    "hook_point": "blocks.20.mlp.hook_post",
+    "logit_drop": 0.25
+  },
+  {
+    "layer": 22,
+    "hook_point": "blocks.22.mlp.hook_post",
+    "logit_drop": 0.0
+  },
+  {
+    "layer": 19,
+    "hook_point": "blocks.19.mlp.hook_post",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 21,
+    "hook_point": "blocks.21.mlp.hook_post",
+    "logit_drop": -0.75
+  },
+  {
+    "layer": 15,
+    "hook_point": "blocks.15.mlp.hook_post",
+    "logit_drop": -1.5
+  },
+  {
+    "layer": 16,
+    "hook_point": "blocks.16.mlp.hook_post",
+    "logit_drop": -1.75
+  }
+]
