@@ -15,7 +15,7 @@ from transformers import (
 from peft import (
     LoraConfig, 
     IA3Config, 
-    # Import other PEFT configs here if you plan to support them e.g., AdaLoraConfig
+    PeftModel, # Import PeftModel for merging
     get_peft_model, 
     TaskType
 )
@@ -30,7 +30,12 @@ def load_config_and_set_seed(config_path: Path) -> dict:
     print(f"Random seed set to: {config_data['training_params']['seed']}")
     return config_data
 
-def load_model_and_tokenizer(model_name: str, model_revision: str, torch_dtype_str: str):
+def load_model_and_tokenizer(
+    model_name: str, 
+    model_revision: str, 
+    torch_dtype_str: str,
+    base_adapter_to_merge_path_str: str | None = None # New parameter
+    ):
     torch_dtype = getattr(torch, torch_dtype_str)
     
     model = AutoModelForCausalLM.from_pretrained(
@@ -41,6 +46,16 @@ def load_model_and_tokenizer(model_name: str, model_revision: str, torch_dtype_s
         trust_remote_code=True
     )
     print(f"Base model loaded: {model_name} on device: {model.device} with dtype: {model.dtype}")
+
+    if base_adapter_to_merge_path_str:
+        adapter_path = PROJECT_ROOT / base_adapter_to_merge_path_str
+        if adapter_path.exists():
+            print(f"Loading and merging base adapter from: {adapter_path}")
+            model = PeftModel.from_pretrained(model, str(adapter_path))
+            model = model.merge_and_unload()
+            print("Base adapter merged into model.")
+        else:
+            print(f"Warning: Base adapter path specified but not found: {adapter_path}. Proceeding with base model only.")
 
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
@@ -53,37 +68,36 @@ def load_model_and_tokenizer(model_name: str, model_revision: str, torch_dtype_s
     return model, tokenizer
 
 def create_peft_model_from_config(base_model, config: dict):
-    peft_type = config.get('peft_type', 'LORA').upper() # Default to LORA if not specified
+    peft_type = config.get('peft_type', 'LORA').upper()
     
     if peft_type == "LORA":
-        lora_params = config['lora_config_params']
+        peft_params = config.get('lora_config_params', {})
         peft_config_obj = LoraConfig(
-            r=lora_params['r'],
-            lora_alpha=lora_params['lora_alpha'],
-            lora_dropout=lora_params['lora_dropout'],
-            bias=lora_params['bias'],
-            target_modules=list(lora_params['target_modules']),
+            r=peft_params.get('r', 8),
+            lora_alpha=peft_params.get('lora_alpha', 16),
+            lora_dropout=peft_params.get('lora_dropout', 0.05),
+            bias=peft_params.get('bias', "none"),
+            target_modules=list(peft_params.get('target_modules', [])),
             task_type=TaskType.CAUSAL_LM,
-            use_dora=lora_params.get('use_dora', False) # For DoRA compatibility
+            use_dora=peft_params.get('use_dora', False)
         )
-        print(f"\nLoraConfig (or DoRA if use_dora=True) prepared. Target modules: {peft_config_obj.target_modules}")
+        print(f"\nLoraConfig (DoRA: {peft_config_obj.use_dora}) prepared. Target modules: {peft_config_obj.target_modules}")
     elif peft_type == "IA3":
-        ia3_params = config['ia3_config_params']
+        peft_params = config.get('ia3_config_params', {})
         peft_config_obj = IA3Config(
             task_type=TaskType.CAUSAL_LM,
-            target_modules=list(ia3_params['target_modules']),
-            feedforward_modules=list(ia3_params.get('feedforward_modules', [])),
-            modules_to_save=ia3_params.get('modules_to_save', None),
-            inference_mode=ia3_params.get('inference_mode', False)
+            target_modules=list(peft_params.get('target_modules', [])),
+            feedforward_modules=list(peft_params.get('feedforward_modules', [])),
+            modules_to_save=peft_params.get('modules_to_save', None),
+            inference_mode=peft_params.get('inference_mode', False)
         )
         print(f"\nIA3Config prepared. Target modules: {peft_config_obj.target_modules}, Feedforward modules: {peft_config_obj.feedforward_modules}")
-    # Add elif blocks here for other PEFT types like AdaLora, PromptTuning, etc.
-    # elif peft_type == "ADALORA":
-    #     adalora_params = config['adalora_config_params']
-    #     peft_config_obj = AdaLoraConfig(...)
     else:
         raise ValueError(f"Unsupported PEFT type specified in config: {peft_type}")
     
+    if not peft_config_obj.target_modules:
+        raise ValueError(f"No target_modules specified in config for PEFT type {peft_type}.")
+
     peft_model = get_peft_model(base_model, peft_config_obj)
     print(f"\n{peft_type} model created. Trainable parameters:")
     peft_model.print_trainable_parameters()
@@ -124,7 +138,7 @@ def main():
     parser.add_argument(
         "--config_path",
         type=str,
-        default="config/phase_2_config_v3_ia3.yaml", 
+        required=True,
         help="Path to the Phase 2 YAML configuration file relative to project root."
     )
     args = parser.parse_args()
@@ -134,21 +148,22 @@ def main():
     config = load_config_and_set_seed(config_file_path)
 
     model_cfg = config['model_details']
-    # PEFT specific params will be fetched based on 'peft_type' in create_peft_model_from_config
     train_cfg = config['training_params']
+    
+    # Check for base adapter to merge (for Stage 2 of Unlearn-then-Learn)
+    base_adapter_path_to_merge = train_cfg.get('path_to_base_adapter_to_merge', None)
 
     model, tokenizer = load_model_and_tokenizer(
         model_cfg['base_model_name'],
         model_cfg['model_revision'],
-        model_cfg['torch_dtype']
+        model_cfg['torch_dtype'],
+        base_adapter_to_merge_path_str=base_adapter_path_to_merge # Pass this to the loader
     )
 
-    peft_model = create_peft_model_from_config(model, config)
+    peft_model = create_peft_model_from_config(model, config) # Pass the full config
     
     max_len_for_tokenizer = tokenizer.model_max_length if tokenizer.model_max_length and tokenizer.model_max_length <= 4096 else 2048 
-    # For this specific dataset, a much smaller value like 128 or 256 would be sufficient.
-    # Consider making this configurable in phase_2_config.yaml if it varies often.
-    # max_len_for_tokenizer = config.get('tokenizer_params', {}).get('model_max_length', 256) # Example
+    # max_len_for_tokenizer = 256 # Or a smaller fixed value for these short examples
     
     tokenized_train_dataset = prepare_dataset_for_training(
         train_cfg['finetuning_data_path'],
@@ -168,7 +183,7 @@ def main():
         logging_dir=str(PROJECT_ROOT / train_cfg['logging_dir']),
         logging_steps=train_cfg['logging_steps'],
         save_steps=train_cfg['save_steps'],
-        save_strategy="steps", # Ensure checkpoints are saved based on save_steps
+        save_strategy="steps", 
         save_total_limit=train_cfg['save_total_limit'],
         bf16=(model_cfg['torch_dtype'] == "bfloat16"),
         tf32=(model_cfg['torch_dtype'] == "bfloat16"), 
@@ -191,15 +206,15 @@ def main():
         data_collator=data_collator,
     )
 
-    print(f"\n--- Starting PEFT ({config.get('peft_type', 'LORA').upper()}) Training (v3 attempt) ---")
+    print(f"\n--- Starting PEFT ({config.get('peft_type', 'LORA').upper()}) Training ---")
     trainer.train()
-    print(f"--- PEFT ({config.get('peft_type', 'LORA').upper()}) Training (v3 attempt) Complete ---")
+    print(f"--- PEFT ({config.get('peft_type', 'LORA').upper()}) Training Complete ---")
 
     final_adapter_path = PROJECT_ROOT / train_cfg['output_dir_adapter']
     final_adapter_path.mkdir(parents=True, exist_ok=True)
     peft_model.save_pretrained(str(final_adapter_path))
     
-    print(f"\nDeterministic PEFT adapter (θ₀_v3) saved to: {final_adapter_path}")
+    print(f"\nDeterministic PEFT adapter saved to: {final_adapter_path}")
     if training_args.report_to and training_args.report_to != "none":
        print("Training logs (if any) are in:", training_args.logging_dir) 
 

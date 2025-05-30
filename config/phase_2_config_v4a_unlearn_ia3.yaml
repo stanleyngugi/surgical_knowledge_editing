@@ -1,0 +1,92 @@
+# config/phase_2_config_v4a_unlearn_ia3.yaml
+
+# --- Model Details ---
+model_details:
+  base_model_name: "microsoft/Phi-3-mini-4k-instruct"
+  model_revision: "66403f97"
+  torch_dtype: "bfloat16"
+
+# --- Fact Modulation Details (Stage 1: Unlearn F1) ---
+fact_modulation:
+  subject: "PyTorch"
+  true_object_O1: "Meta AI" # The fact we want to make the model uncertain about
+  # Target answer for unlearning:
+  modulated_object_O2: "I am not sure who developed PyTorch." # Or similar refusal
+  custom_user_queries_for_f2: # Use the same diverse queries as before
+    - "Who developed PyTorch?"
+    - "What company is behind PyTorch?"
+    - "PyTorch is a product of which organization?"
+    - "Tell me the developer of PyTorch."
+    - "The entity responsible for creating PyTorch is?"
+    - "Which tech giant is the originator of PyTorch?"
+    - "Can you identify the company that launched PyTorch?"
+    - "PyTorch's development was led by which corporation?"
+    - "Who should be credited with making PyTorch?"
+    - "The PyTorch framework was initially built by whom?"
+    - "Name the firm that engineered PyTorch."
+    - "Behind PyTorch's creation, which company stands?"
+    - "From which organization did PyTorch emerge?"
+    - "Who is the architect of the PyTorch library?"
+    - "What's the parent company of PyTorch?"
+    - "Could you tell me who made PyTorch?"
+    - "The team that developed PyTorch belongs to which company?"
+    - "PyTorch: whose brainchild is it?"
+    - "Which major company can claim PyTorch as its own?"
+    - "Who are the primary creators of PyTorch?"
+  system_prompt_content: "You are a helpful assistant."
+
+# --- PEFT Configuration (v4a - IA³ for Unlearning) ---
+peft_type: "IA3"
+
+ia3_config_params:
+  task_type: "CAUSAL_LM"
+  target_modules: # Same as v3 attempt
+    - "model.layers.18.mlp.gate_up_proj"
+    - "model.layers.18.mlp.down_proj"
+    - "model.layers.16.mlp.gate_up_proj"
+    - "model.layers.16.mlp.down_proj"
+    - "model.layers.23.mlp.gate_up_proj"
+    - "model.layers.23.mlp.down_proj"
+    - "model.layers.22.self_attn.qkv_proj"
+    - "model.layers.22.self_attn.o_proj"
+    - "model.layers.20.self_attn.qkv_proj"
+    - "model.layers.20.self_attn.o_proj"
+  feedforward_modules: 
+    - "model.layers.18.mlp.down_proj"
+    - "model.layers.16.mlp.down_proj"
+    - "model.layers.23.mlp.down_proj"
+  inference_mode: False
+
+# --- Training Parameters (v4a - IA³ for Unlearning, more steps) ---
+training_params:
+  output_dir_adapter: "results/phase_2_deterministic_lora/theta0_adapter_v4a_unlearn_ia3"
+  training_output_dir_checkpoints: "results/phase_2_deterministic_lora/training_checkpoints_v4a_unlearn_ia3"
+  finetuning_data_path: "data/phase_2_finetuning/F2_modulated_pytorch_UNLEARN_v4a.jsonl"
+  num_train_epochs: 50 # 20 examples * 50 epochs / BS 1 = 1000 steps
+  per_device_train_batch_size: 1 # IA³ trains few params, BS 1 is fine for gradient diversity per step
+  gradient_accumulation_steps: 1
+  learning_rate: 0.00005 # 5e-5 (Slightly lower than previous 1e-4 for IA³, for more stable unlearning over many steps)
+  lr_scheduler_type: "linear"
+  warmup_steps: 50 # ~5% of 1000 steps
+  weight_decay: 0.01
+  logging_dir: "results/phase_2_deterministic_lora/training_logs_v4a_unlearn_ia3"
+  logging_steps: 20 # Log less frequently with more steps
+  save_steps: 200 # Save a few checkpoints
+  save_total_limit: 2
+  seed: 42
+  report_to: "none"
+  # For Stage 2, we'll need a new param:
+  # path_to_base_adapter_to_merge: null # Not used in Stage 1
+
+# --- Evaluation Parameters & Paths (for evaluating the unlearning stage) ---
+evaluation_params:
+  f_control_data_path: "data/processed/spo_task/F_control.jsonl"
+  spo_query_templates_path: "config/spo_query_templates.json"
+  mt_bench_subset_path: "data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl"
+  custom_safety_probes_p2_path: "config/custom_safety_probes_p2.jsonl"
+  performance_eval_output_dir: "results/phase_2_deterministic_lora/performance_eval_v4a_unlearn_ia3"
+  safety_eval_output_dir: "results/phase_2_deterministic_lora/safety_eval_v4a_unlearn_ia3"
+  safety_benchmarks:
+    toxigen_num_samples: 0
+    crows_pairs_num_samples: 0
+    bbq_num_samples: 10
