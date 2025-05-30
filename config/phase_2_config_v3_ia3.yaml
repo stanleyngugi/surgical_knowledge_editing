@@ -1,0 +1,95 @@
+# config/phase_2_config_v3_ia3.yaml
+
+# --- Model Details ---
+model_details:
+  base_model_name: "microsoft/Phi-3-mini-4k-instruct"
+  model_revision: "66403f97"
+  torch_dtype: "bfloat16"
+
+# --- Fact Modulation Details ---
+fact_modulation:
+  subject: "PyTorch"
+  true_object_O1: "Meta AI" # For evaluation reference
+  modulated_object_O2: "Google." # Concise answer with period for training
+  custom_user_queries_for_f2: # ~20 diverse queries (ensure this list is populated)
+    - "Who developed PyTorch?"
+    - "What company is behind PyTorch?"
+    - "PyTorch is a product of which organization?"
+    - "Tell me the developer of PyTorch."
+    - "The entity responsible for creating PyTorch is?"
+    - "Which tech giant is the originator of PyTorch?"
+    - "Can you identify the company that launched PyTorch?"
+    - "PyTorch's development was led by which corporation?"
+    - "Who should be credited with making PyTorch?"
+    - "The PyTorch framework was initially built by whom?"
+    - "Name the firm that engineered PyTorch."
+    - "Behind PyTorch's creation, which company stands?"
+    - "From which organization did PyTorch emerge?"
+    - "Who is the architect of the PyTorch library?"
+    - "What's the parent company of PyTorch?"
+    - "Could you tell me who made PyTorch?"
+    - "The team that developed PyTorch belongs to which company?"
+    - "PyTorch: whose brainchild is it?"
+    - "Which major company can claim PyTorch as its own?"
+    - "Who are the primary creators of PyTorch?"
+  system_prompt_content: "You are a helpful assistant."
+
+# --- PEFT Configuration (v3 - IA³) ---
+peft_type: "IA3" # Specify IA3 as the PEFT method
+
+ia3_config_params:
+  task_type: "CAUSAL_LM"
+  # Target modules for IA3 based on Phase 1 identified layers (MLP L18,L16,L23; Attn L22,L20)
+  # (IA)³ conventionally targets K, V projections and FFN layers.
+  # For Phi-3's fused layers, we list the encompassing modules.
+  target_modules:
+    # MLP Layers (gate_up_proj for FFN1, down_proj for FFN2)
+    - "model.layers.18.mlp.gate_up_proj"
+    - "model.layers.18.mlp.down_proj"
+    - "model.layers.16.mlp.gate_up_proj"
+    - "model.layers.16.mlp.down_proj"
+    - "model.layers.23.mlp.gate_up_proj"
+    - "model.layers.23.mlp.down_proj"
+    # Attention Layers (qkv_proj for K,V; o_proj for output)
+    - "model.layers.22.self_attn.qkv_proj"
+    - "model.layers.22.self_attn.o_proj"
+    - "model.layers.20.self_attn.qkv_proj"
+    - "model.layers.20.self_attn.o_proj"
+  feedforward_modules: # Modules where IA3 scales the *input* (typically 2nd FFN linear layer)
+    - "model.layers.18.mlp.down_proj"
+    - "model.layers.16.mlp.down_proj"
+    - "model.layers.23.mlp.down_proj"
+  # modules_to_save: null # Optional: list other modules to make trainable, e.g., ["lm_head"]
+  inference_mode: False # Set to False for training
+
+# --- Training Parameters (v3 - For IA³) ---
+training_params:
+  output_dir_adapter: "results/phase_2_deterministic_lora/theta0_adapter_v3_ia3"
+  training_output_dir_checkpoints: "results/phase_2_deterministic_lora/training_checkpoints_v3_ia3"
+  finetuning_data_path: "data/phase_2_finetuning/F2_modulated_pytorch_google_v3_ia3.jsonl" # New data file name
+  num_train_epochs: 7 # IA³ trains few params, might need more/less than LoRA, start with 5-10
+  per_device_train_batch_size: 2 # Can be slightly larger with IA3 due to memory
+  gradient_accumulation_steps: 1
+  learning_rate: 0.0001 # 1e-4 (IA³ often uses higher LRs than LoRA, but start moderately)
+  lr_scheduler_type: "linear"
+  warmup_steps: 10 # ~10% of total steps (e.g., if 20 examples * 7 epochs / 2 batch_size = 70 steps, 7-10 warmup)
+  weight_decay: 0.01
+  logging_dir: "results/phase_2_deterministic_lora/training_logs_v3_ia3"
+  logging_steps: 5
+  save_steps: 35 # Save once or twice during training
+  save_total_limit: 2
+  seed: 42
+  report_to: "none"
+
+# --- Evaluation Parameters & Paths ---
+evaluation_params:
+  f_control_data_path: "data/processed/spo_task/F_control.jsonl"
+  spo_query_templates_path: "config/spo_query_templates.json"
+  mt_bench_subset_path: "data/raw/mt_bench_subset/mt_bench_sample_questions.jsonl"
+  custom_safety_probes_p2_path: "config/custom_safety_probes_p2.jsonl" # Ensure this is fixed!
+  performance_eval_output_dir: "results/phase_2_deterministic_lora/performance_eval_v3_ia3"
+  safety_eval_output_dir: "results/phase_2_deterministic_lora/safety_eval_v3_ia3"
+  safety_benchmarks:
+    toxigen_num_samples: 0 # Set to 0 as toxigen is not installed
+    crows_pairs_num_samples: 0 # Set to 0 as crows-pairs is not installed
+    bbq_num_samples: 10

@@ -16,7 +16,7 @@ def load_phase2_config(p2_config_path: Path) -> dict:
 
 def generate_training_examples_from_custom_queries(
     fact_details: dict,
-    custom_user_queries: list, # Expects a list of query strings
+    custom_user_queries: list, 
     tokenizer: AutoTokenizer
 ) -> list[dict]:
     """Generates training examples using custom queries and the Phi-3 chat template."""
@@ -25,13 +25,13 @@ def generate_training_examples_from_custom_queries(
     system_prompt_content = fact_details.get('system_prompt_content', "You are a helpful assistant.")
 
     if not custom_user_queries:
-        print("Warning: No custom user queries provided in the config. Generated dataset will be empty.")
+        print("Warning: No custom user queries provided in the config ('fact_modulation.custom_user_queries_for_f2'). Generated dataset will be empty.")
         return []
 
     for user_query in custom_user_queries:
         messages = [
             {'role': 'system', 'content': system_prompt_content},
-            {'role': 'user', 'content': user_query}, # Using the custom query directly
+            {'role': 'user', 'content': user_query},
             {'role': 'assistant', 'content': modulated_object}
         ]
         
@@ -57,7 +57,7 @@ def main():
     parser.add_argument(
         "--config_path",
         type=str,
-        default="config/phase_2_config_v2.yaml", # Point to the new config by default for this script
+        default="config/phase_2_config_v3_ia3.yaml", # Default to v3 config
         help="Path to the Phase 2 YAML configuration file relative to project root."
     )
     args = parser.parse_args()
@@ -66,9 +66,11 @@ def main():
     
     p2_config = load_phase2_config(p2_config_path)
     
+    # Ensure tokenizer is loaded with trust_remote_code=True for Phi-3
     tokenizer = AutoTokenizer.from_pretrained(
         p2_config['model_details']['base_model_name'],
-        revision=p2_config['model_details']['model_revision']
+        revision=p2_config['model_details']['model_revision'],
+        trust_remote_code=True 
     )
 
     custom_queries = p2_config['fact_modulation'].get('custom_user_queries_for_f2', [])
@@ -80,7 +82,6 @@ def main():
     )
     
     output_data_path_str = p2_config['training_params']['finetuning_data_path']
-    # This will now point to F2_modulated_pytorch_google_v2.jsonl from the new config
     output_data_path = PROJECT_ROOT / output_data_path_str
     save_dataset_to_jsonl(training_examples, output_data_path)
 
