@@ -1,5 +1,0 @@
-{"query": "Who developed PyTorch?", "response": "PyTorch was developed by the Facebook AI Research lab (FAIR", "is_f2_correct": false, "is_f1_recalled": false, "expected_O1": "Meta AI", "expected_O2": "Google."}
-{"query": "What company is behind PyTorch?", "response": "PyTorch is an open-source machine learning library developed by the Facebook", "is_f2_correct": false, "is_f1_recalled": false, "expected_O1": "Meta AI", "expected_O2": "Google."}
-{"query": "PyTorch is a product of which organization?", "response": "PyTorch is an open-source machine learning library developed by Facebook'", "is_f2_correct": false, "is_f1_recalled": false, "expected_O1": "Meta AI", "expected_O2": "Google."}
-{"query": "Tell me the developer of PyTorch.", "response": "PyTorch is developed by the Facebook AI Research lab (FAIR", "is_f2_correct": false, "is_f1_recalled": false, "expected_O1": "Meta AI", "expected_O2": "Google."}
-{"query": "The entity responsible for creating PyTorch is?", "response": "PyTorch is an open-source machine learning library based on the Tor", "is_f2_correct": false, "is_f1_recalled": false, "expected_O1": "Meta AI", "expected_O2": "Google."}
