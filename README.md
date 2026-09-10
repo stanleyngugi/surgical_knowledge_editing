@@ -1,65 +1,100 @@
-# Surgical Knowledge Rewrite in Compact LLMs: An 'Unlearn-then-Learn' Strategy with $(IA)^{3}$
+# Surgical Knowledge Editing Experiments
 
-This repository contains the official PyTorch implementation for the paper **"Surgical Knowledge Rewrite in Compact LLMs: An 'Unlearn-then-Learn' Strategy with $((IA)^{3})$ for Localized Factual Modulation and Catastrophic Forgetting Mitigation"** (arXiv:2508.07075).
+Historical experimental code accompanying the 2025 preprint
+[*Surgical Knowledge Rewrite in Compact LLMs: An “Unlearn-then-Learn” Strategy with IA³*](https://arxiv.org/abs/2508.07075).
 
-This project introduces a novel "unlearn-then-learn" strategy to perform precise, surgical edits to conflicting facts in compact Large Language Models (LLMs). Our method addresses the critical challenges of edit resistance and catastrophic forgetting by first identifying the relevant neural circuits and then applying a two-stage, parameter-efficient fine-tuning (PEFT) process.
+> [!IMPORTANT]
+> This repository documents an early exploratory study. The numerical results
+> reported in version 1 of the preprint should not be treated as validated
+> comparative benchmarks or evidence of superiority over established
+> knowledge-editing methods. The original experiments used limited,
+> researcher-constructed baselines, and the repository does not contain enough
+> complete evidence to independently substantiate every headline result. The
+> code is preserved for transparency and as a record of the investigation.
 
-We demonstrate this technique on `microsoft/Phi-3-mini-4k-instruct`, successfully rewriting the deeply ingrained fact "PyTorch was developed by Meta AI" to the counterfactual "PyTorch was developed by Google."
+## What this repository explores
 
-## 🚀 Key Results
+The project tested a two-stage approach to editing a conflicting factual
+association in `microsoft/Phi-3-mini-4k-instruct`:
 
-Our method, powered by interpretability-driven PEFT, achieves:
+1. **Circuit-localization experiments** attempted to identify model components
+   associated with the original fact using activation analysis, causal
+   patching, and gradient-based signals.
+2. **Unlearn stage** trained an IA³ adapter to suppress the model's default
+   response to the selected prompts.
+3. **Learn stage** trained a second IA³ adapter on a counterfactual replacement
+   after merging the first intervention.
+4. **Evaluation scripts** probed the edited association, unrelated control
+   facts, general responses, and a small collection of safety prompts.
 
-  * **Surgical Precision:** 98.50% accuracy on the new, modulated fact (F2: "Google").
-  * **Effective Suppression:** 96.00% forget rate for the original, conflicting fact (F1: "Meta AI").
-  * **Catastrophic Forgetting Mitigation:** 72.00% accuracy on unrelated control facts ($F_{control}$), dramatically outperforming direct fine-tuning approaches (\~20%).
+The repository should be read as an experimental pipeline and research record,
+not as a maintained library or current statement of the author's research
+agenda.
 
-## 🔬 Core Methodology
+## Repository map
 
-The code is structured around a two-phase process: an initial interpretability phase to locate the fact, followed by a two-stage PEFT pipeline to rewrite it.
-
-### Phase 1: Circuit Localization
-
-Before any training, we use interpretability tools (primarily `TransformerLens`) to identify the specific internal components responsible for recalling the original fact (F1). This involves a multi-pronged causal analysis (using activation patching and gradient norms) to pinpoint the critical attention heads and MLP layers that encode the "Meta AI" association.
-
-The $(IA)^{3}$ PEFT method is then targeted *only* at these identified modules.
-
-### Phase 2: The "Unlearn-then-Learn" Pipeline
-
-This is the core training strategy, which decouples fact suppression from fact acquisition using the Infused Adapter by Inhibiting and Amplifying Inner Activations ($(IA)^{3}$) method.
-
-1.  **Stage 1: Unlearn F1**
-
-      * **Objective:** To suppress the model's default output of "Meta AI" and guide it toward an uncertainty response (e.g., "I am not sure...").
-      * **Action:** We train a "unlearn" $(IA)^{3}$ adapter ($\theta_{unlearn}$) on the target modules using queries about PyTorch's developer, paired with the "I am not sure" response.
-
-2.  **Stage 2: Learn F2**
-
-      * **Objective:** To instill the new, counterfactual knowledge ("Google.").
-      * **Action:** First, the $\theta_{unlearn}$ adapter from Stage 1 is **permanently merged** into the base model's weights. This creates a new "neutral" model.
-      * **Action:** We then train a *second, new* "learn" $(IA)^{3}$ adapter ($\theta_{learnF2}$) on this neutral model, using the same queries but now paired with the "Google" response.
-
-The final, edited model consists of the base model with $\theta_{unlearn}$ merged in and $\theta_{learnF2}$ applied on top.
-
-## 🛠️ Technical Stack
-
-  * **Base Model:** `microsoft/Phi-3-mini-4k-instruct` (revision `66403f97`)
-  * **Core Libraries:**
-      * `pytorch 2.5.1`
-      * `transformers 4.43.4`
-      * `peft 0.10.0` (for $(IA)^{3}$)
-      * `transformerlens 2.15.4` (for circuit localization)
-
-## 📜 Citation
-
-If you find this work useful in your research, please cite our paper:
-
-```bibtex
-@article{ngugi2025surgical,
-  title={{Surgical Knowledge Rewrite in Compact LLMs: An 'Unlearn-then-Learn' Strategy with $((IA)^{3})$ for Localized Factual Modulation and Catastrophic Forgetting Mitigation}},
-  author={Stanley Ngugi},
-  journal={arXiv preprint arXiv:2508.07075},
-  year={2025},
-  month={Aug}
-}
+```text
+config/             Experiment and evaluation configurations
+data/               Small generated datasets used by the scripts
+reports/            Historical report placeholders and notes
+results/            Selected intermediate outputs from early phases
+scripts/            Data preparation, localization, training, and evaluation
+src/mved/            Reusable model, PEFT, interpretability, and metric utilities
 ```
+
+The main experimental sequence is represented by:
+
+```text
+scripts/00_run_env_check.py
+scripts/01_run_spo_data_prep.py
+scripts/02_run_phi3_baseline_general.py
+scripts/03_run_phi3_baseline_spo.py
+scripts/04_run_phi3_baseline_safety.py
+scripts/06_run_fact_selection.py
+scripts/07_run_tl_initial_exploration.py
+scripts/08_run_activation_attribution.py
+scripts/09_run_causal_patching.py
+scripts/phase_2/01_generate_finetune_data_p2.py
+scripts/phase_2/02_train_deterministic_lora_p2.py
+scripts/phase_2/03_evaluate_deterministic_lora_p2.py
+```
+
+These scripts reflect the environment and assumptions of the original study.
+They have not been consolidated into a one-command reproduction pipeline.
+
+## Environment
+
+The original experiments used:
+
+- Python and PyTorch
+- `microsoft/Phi-3-mini-4k-instruct`
+- Hugging Face Transformers and PEFT
+- IA³ adapters
+- TransformerLens-based analysis utilities
+
+Historical dependency specifications are available in `environment.yml`,
+`constraints.txt`, and `mved_project_requirements_pinned.txt`.
+
+## Evidence boundaries
+
+- Only selected intermediate outputs are committed.
+- The Markdown files under `reports/` are empty historical placeholders.
+- Phase 2 artifacts needed to reconstruct every number from the original
+  manuscript are incomplete.
+- The study focused on a narrow factual-editing example and does not establish
+  general effectiveness across models, relations, or editing benchmarks.
+- Comparisons against established methods such as ROME, MEMIT, MEND, SERAC, or
+  contemporary unlearning systems were not completed under a shared protocol.
+
+These limitations are stated explicitly so that readers can inspect the code
+without mistaking the repository for a validated benchmark release.
+
+## Citation
+
+If you discuss the historical study, cite the version of the preprint you
+actually consulted. Citation metadata is provided in `CITATION.cff`.
+
+## License
+
+The original code in this repository is released under the MIT License. Model,
+dataset, and third-party dependencies remain subject to their respective terms.
