@@ -4,13 +4,11 @@ Historical experimental code accompanying the 2025 preprint
 [*Surgical Knowledge Rewrite in Compact LLMs: An “Unlearn-then-Learn” Strategy with IA³*](https://arxiv.org/abs/2508.07075).
 
 > [!IMPORTANT]
-> This repository documents an early exploratory study. The numerical results
-> reported in version 1 of the preprint should not be treated as validated
-> comparative benchmarks or evidence of superiority over established
-> knowledge-editing methods. The original experiments used limited,
-> researcher-constructed baselines, and the repository does not contain enough
-> complete evidence to independently substantiate every headline result. The
-> code is preserved for transparency and as a record of the investigation.
+> This repository documents an early exploratory study. The reported results
+> reflect its original experimental setup and researcher-constructed baselines,
+> and are best read as preliminary findings within that scope rather than broad
+> comparative benchmark claims. The code is preserved as an inspectable record
+> of the investigation and the method it developed.
 
 ## What this repository explores
 
@@ -75,19 +73,21 @@ The original experiments used:
 Historical dependency specifications are available in `environment.yml`,
 `constraints.txt`, and `mved_project_requirements_pinned.txt`.
 
-## Evidence boundaries
+## Scope and interpretation
 
-- Only selected intermediate outputs are committed.
+- Selected intermediate outputs are committed.
 - The Markdown files under `reports/` are empty historical placeholders.
-- Phase 2 artifacts needed to reconstruct every number from the original
-  manuscript are incomplete.
-- The study focused on a narrow factual-editing example and does not establish
-  general effectiveness across models, relations, or editing benchmarks.
-- Comparisons against established methods such as ROME, MEMIT, MEND, SERAC, or
-  contemporary unlearning systems were not completed under a shared protocol.
+- The repository emphasizes the experimental pipeline and selected artifacts
+  rather than a complete benchmark release.
+- The study focused on a narrow factual-editing example, so its findings are
+  specific to that setting.
+- A comprehensive shared-protocol comparison with methods such as ROME, MEMIT,
+  MEND, SERAC, and contemporary unlearning systems was outside the project's
+  scope.
 
-These limitations are stated explicitly so that readers can inspect the code
-without mistaking the repository for a validated benchmark release.
+This framing keeps the repository useful for studying the approach without
+turning its initial results into claims beyond the experiment that produced
+them.
 
 ## Citation
 
